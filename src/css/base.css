@@ -11,6 +11,11 @@
   --color-hilary: #003875;  /* Deep Oxford Blue */
   --color-trinity: #005A3C;  /* Oxford Green */
   
+  /* Faded term colors for extended weeks (0, 9-12) */
+  --color-michaelmas-faded: #87243460;  /* 38% opacity */
+  --color-hilary-faded: #00387560;  /* 38% opacity */
+  --color-trinity-faded: #005A3C60;  /* 38% opacity */
+  
   /* Neutral colors - Oxford-tinted */
   --color-background: #ffffff;
   --color-surface: #f5f7fa;

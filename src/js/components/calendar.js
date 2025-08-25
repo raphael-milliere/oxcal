@@ -144,8 +144,10 @@ export class Calendar {
     
     const termClass = termWeek.term.toLowerCase();
     const weekLabel = `Wk ${termWeek.week}`;
+    const isExtended = termWeek.week === 0 || termWeek.week >= 9;
+    const extendedClass = isExtended ? ' extended-week' : '';
     
-    return `<span class="term-week-badge ${termClass}">${weekLabel}</span>`;
+    return `<span class="term-week-badge ${termClass}${extendedClass}">${weekLabel}</span>`;
   }
   
   /**
@@ -164,7 +166,13 @@ export class Calendar {
     if (this.selectedDate && isSameDay(date, this.selectedDate)) classes.push('selected');
     if (this.focusedDate && isSameDay(date, this.focusedDate)) classes.push('focused');
     if (this.highlightedDates.some(d => isSameDay(d, date))) classes.push('highlighted');
-    if (termWeek) classes.push(`term-${termWeek.term.toLowerCase()}`);
+    if (termWeek) {
+      classes.push(`term-${termWeek.term.toLowerCase()}`);
+      // Add extended-week class for weeks 0 and 9-12
+      if (termWeek.week === 0 || termWeek.week >= 9) {
+        classes.push('extended-week');
+      }
+    }
     
     dayDiv.className = classes.join(' ');
     

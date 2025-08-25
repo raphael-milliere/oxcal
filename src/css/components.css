@@ -96,18 +96,34 @@
 }
 
 /* Term-specific day indicators - Use borders instead of backgrounds */
-.calendar-day.term-michaelmas:not(.other-month) {
+.calendar-day.term-michaelmas:not(.other-month):not(.extended-week) {
   border-left: 3px solid var(--color-michaelmas);
   padding-left: calc(var(--spacing-xs) - 2px);
 }
 
-.calendar-day.term-hilary:not(.other-month) {
+.calendar-day.term-hilary:not(.other-month):not(.extended-week) {
   border-left: 3px solid var(--color-hilary);
   padding-left: calc(var(--spacing-xs) - 2px);
 }
 
-.calendar-day.term-trinity:not(.other-month) {
+.calendar-day.term-trinity:not(.other-month):not(.extended-week) {
   border-left: 3px solid var(--color-trinity);
+  padding-left: calc(var(--spacing-xs) - 2px);
+}
+
+/* Extended week day indicators - Faded colors for weeks 0, 9-12 */
+.calendar-day.term-michaelmas.extended-week:not(.other-month) {
+  border-left: 3px solid var(--color-michaelmas-faded);
+  padding-left: calc(var(--spacing-xs) - 2px);
+}
+
+.calendar-day.term-hilary.extended-week:not(.other-month) {
+  border-left: 3px solid var(--color-hilary-faded);
+  padding-left: calc(var(--spacing-xs) - 2px);
+}
+
+.calendar-day.term-trinity.extended-week:not(.other-month) {
+  border-left: 3px solid var(--color-trinity-faded);
   padding-left: calc(var(--spacing-xs) - 2px);
 }
 
@@ -135,16 +151,30 @@
   letter-spacing: 0.05em;
 }
 
-.term-week-badge.michaelmas {
+/* Full term badges (weeks 1-8) */
+.term-week-badge.michaelmas:not(.extended-week) {
   background-color: var(--color-michaelmas);
 }
 
-.term-week-badge.hilary {
+.term-week-badge.hilary:not(.extended-week) {
   background-color: var(--color-hilary);
 }
 
-.term-week-badge.trinity {
+.term-week-badge.trinity:not(.extended-week) {
   background-color: var(--color-trinity);
+}
+
+/* Extended week badges (weeks 0, 9-12) - Faded colors */
+.term-week-badge.michaelmas.extended-week {
+  background-color: var(--color-michaelmas-faded);
+}
+
+.term-week-badge.hilary.extended-week {
+  background-color: var(--color-hilary-faded);
+}
+
+.term-week-badge.trinity.extended-week {
+  background-color: var(--color-trinity-faded);
 }
 
 /* Search Result Styles - Stark status indicators */
