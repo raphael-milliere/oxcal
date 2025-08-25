@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generate Icons</title>
+</head>
+<body>
+  <h1>Icon Generator for OxCal</h1>
+  <p>This page generates PNG icons from the SVG source.</p>
+  
+  <div id="icons"></div>
+  
+  <script>
+    // Icon sizes needed for PWA
+    const sizes = [16, 32, 72, 96, 128, 144, 152, 180, 192, 384, 512];
+    
+    // SVG content
+    const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <rect width="512" height="512" fill="#002147"/>
+      <rect x="50" y="100" width="412" height="312" rx="20" fill="white"/>
+      <rect x="80" y="180" width="50" height="50" fill="#9c27b0"/>
+      <rect x="150" y="180" width="50" height="50" fill="#2196f3"/>
+      <rect x="220" y="180" width="50" height="50" fill="#4caf50"/>
+      <rect x="290" y="180" width="50" height="50" fill="#002147"/>
+      <rect x="360" y="180" width="50" height="50" fill="#9c27b0"/>
+      <rect x="80" y="250" width="50" height="50" fill="#2196f3"/>
+      <rect x="150" y="250" width="50" height="50" fill="#4caf50"/>
+      <rect x="220" y="250" width="50" height="50" fill="#002147"/>
+      <rect x="290" y="250" width="50" height="50" fill="#9c27b0"/>
+      <rect x="360" y="250" width="50" height="50" fill="#2196f3"/>
+      <rect x="80" y="320" width="50" height="50" fill="#4caf50"/>
+      <rect x="150" y="320" width="50" height="50" fill="#002147"/>
+      <rect x="220" y="320" width="50" height="50" fill="#9c27b0"/>
+      <rect x="290" y="320" width="50" height="50" fill="#2196f3"/>
+      <rect x="360" y="320" width="50" height="50" fill="#4caf50"/>
+      <text x="256" y="150" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#002147">OxCal</text>
+    </svg>`;
+    
+    const container = document.getElementById('icons');
+    
+    sizes.forEach(size => {
+      // Create canvas
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      
+      // Create image from SVG
+      const img = new Image();
+      const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0, size, size);
+        
+        // Convert to PNG and create download link
+        canvas.toBlob(function(blob) {
+          const link = document.createElement('a');
+          link.download = `icon-${size}x${size}.png`;
+          link.href = URL.createObjectURL(blob);
+          link.textContent = `Download ${size}x${size}`;
+          link.style.display = 'block';
+          link.style.margin = '10px';
+          container.appendChild(link);
+        }, 'image/png');
+        
+        URL.revokeObjectURL(url);
+      };
+      
+      img.src = url;
+    });
+    
+    // Note for manual process
+    const note = document.createElement('p');
+    note.innerHTML = '<br><strong>Note:</strong> Click each link to download the icon, then place them in the /public/icons/ directory.';
+    container.appendChild(note);
+  </script>
+</body>
+</html>
