@@ -103,24 +103,6 @@
   padding: var(--spacing-md);
 }
 
-/* App Footer - Single line, minimal */
-.app-footer {
-  background-color: var(--color-primary);
-  color: white;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-top: var(--border-width) solid var(--color-primary);
-  height: 32px;
-  display: flex;
-  align-items: center;
-}
-
-.app-footer p {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 /* Search Section - Compact single line */
 .search-section {
   border: var(--border-width) solid var(--color-border);
@@ -411,7 +393,6 @@
 /* Print styles - Maximum density */
 @media print {
   .app-header,
-  .app-footer,
   .search-section,
   .nav-button,
   .theme-toggle {
