@@ -19,8 +19,8 @@ class ThemeManager {
   init() {
     if (this.initialized) return;
     
-    // Get theme preference
-    this.currentTheme = this.getStoredTheme() || this.getSystemPreference();
+    // Get theme preference - default to light theme
+    this.currentTheme = this.getStoredTheme() || THEME_LIGHT;
     
     // Ensure data-theme attribute is set immediately
     const root = document.documentElement;
@@ -30,17 +30,6 @@ class ThemeManager {
     
     // Apply initial theme
     this.applyTheme(this.currentTheme);
-    
-    // Listen for system preference changes
-    if (window.matchMedia) {
-      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      darkModeQuery.addEventListener('change', (e) => {
-        // Only auto-switch if user hasn't set a manual preference
-        if (!this.getStoredTheme()) {
-          this.setTheme(e.matches ? THEME_DARK : THEME_LIGHT);
-        }
-      });
-    }
     
     this.initialized = true;
   }
