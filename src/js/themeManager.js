@@ -8,15 +8,20 @@ const THEME_DARK = 'dark';
 
 class ThemeManager {
   constructor() {
-    this.currentTheme = this.getStoredTheme() || this.getSystemPreference();
+    this.currentTheme = null;
     this.listeners = [];
-    this.init();
+    this.initialized = false;
   }
   
   /**
-   * Initialize theme manager
+   * Initialize theme manager - must be called after DOM is ready
    */
   init() {
+    if (this.initialized) return;
+    
+    // Get theme preference
+    this.currentTheme = this.getStoredTheme() || this.getSystemPreference();
+    
     // Apply initial theme
     this.applyTheme(this.currentTheme);
     
@@ -30,6 +35,8 @@ class ThemeManager {
         }
       });
     }
+    
+    this.initialized = true;
   }
   
   /**
@@ -145,6 +152,10 @@ class ThemeManager {
    * @returns {string} Current theme name
    */
   getTheme() {
+    if (!this.initialized) {
+      // Return stored or system preference if not initialized yet
+      return this.getStoredTheme() || this.getSystemPreference();
+    }
     return this.currentTheme;
   }
   

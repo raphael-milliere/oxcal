@@ -28,6 +28,9 @@ async function init() {
   try {
     showLoading(true);
     
+    // Initialize theme manager first (requires DOM to be ready)
+    themeManager.init();
+    
     // Load terms data
     await loadTermsData();
     appState.termsLoaded = true;
