@@ -1,22 +1,22 @@
 /* Brutalist base styles - Sharp, functional, dense */
 
 :root {
-  /* Colors - High contrast palette */
-  --color-primary: #000000;
-  --color-primary-hover: #333333;
-  --color-accent: #ff0000;
+  /* Colors - Oxford Blue palette */
+  --color-primary: #002147;  /* Official Oxford Blue */
+  --color-primary-hover: #003366;
+  --color-accent: #872434;  /* Oxford Red */
   
-  /* Term colors - Bold and stark */
-  --color-michaelmas: #8B0000;
-  --color-hilary: #000080;
-  --color-trinity: #006400;
+  /* Term colors - Oxford-inspired */
+  --color-michaelmas: #872434;  /* Oxford Red/Burgundy */
+  --color-hilary: #003875;  /* Deep Oxford Blue */
+  --color-trinity: #005A3C;  /* Oxford Green */
   
-  /* Neutral colors - Pure contrast */
+  /* Neutral colors - Oxford-tinted */
   --color-background: #ffffff;
-  --color-surface: #f0f0f0;
-  --color-border: #000000;
-  --color-text: #000000;
-  --color-text-muted: #666666;
+  --color-surface: #f5f7fa;
+  --color-border: #002147;
+  --color-text: #001833;  /* Very dark Oxford Blue */
+  --color-text-muted: #4a5f7a;
   
   /* Typography - Tight and functional */
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
