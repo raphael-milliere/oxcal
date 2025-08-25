@@ -1,199 +1,160 @@
-/* Theme styles for dark mode and color schemes */
+/* Brutalist theme system - High contrast light and dark modes */
 
-/* Dark mode variables */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #1a1a1a;
-    --color-surface: #2d2d2d;
-    --color-border: #404040;
-    --color-text: #e0e0e0;
-    --color-text-muted: #a0a0a0;
-    
-    /* Adjust primary colors for dark mode */
-    --color-primary: #4a7ba7;
-    --color-primary-light: #6fa3d2;
-    --color-primary-dark: #2e5f8a;
-    
-    /* Adjust term colors for better contrast in dark mode */
-    --color-michaelmas: #cd853f;
-    --color-hilary: #6495ed;
-    --color-trinity: #3cb371;
-    
-    /* Shadows for dark mode */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-  }
-  
-  /* Dark mode specific adjustments */
-  .app-header {
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-  }
-  
-  .calendar-day-header {
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-  }
-  
-  .calendar-day.today {
-    background-color: #3d3d00;
-  }
-  
-  .calendar-day.selected {
-    background-color: #003d4d;
-  }
-  
-  .search-button {
-    background-color: var(--color-primary);
-  }
-  
-  .search-button:hover {
-    background-color: var(--color-primary-light);
-  }
-  
-  .loading-overlay {
-    background-color: rgba(26, 26, 26, 0.9);
-  }
-  
-  .loading-spinner {
-    border-color: var(--color-border);
-    border-top-color: var(--color-primary);
-  }
-  
-  /* Result styles for dark mode */
-  .result-success {
-    background-color: #1e4e2a;
-    color: #a3d5b1;
-    border-left-color: #52c41a;
-  }
-  
-  .result-info {
-    background-color: #1e3a4e;
-    color: #a3c5d5;
-    border-left-color: #40a9ff;
-  }
-  
-  .result-warning {
-    background-color: #4e3e1e;
-    color: #d5c5a3;
-    border-left-color: #faad14;
-  }
-  
-  .result-error {
-    background-color: #4e1e1e;
-    color: #d5a3a3;
-    border-left-color: #ff4d4f;
-  }
+/* Light Theme (Default) */
+:root {
+  --theme-name: 'light';
 }
 
-/* Manual dark mode class */
+/* Dark Theme - Inverted brutalist */
 [data-theme="dark"] {
-  --color-background: #1a1a1a;
-  --color-surface: #2d2d2d;
-  --color-border: #404040;
-  --color-text: #e0e0e0;
-  --color-text-muted: #a0a0a0;
-  --color-primary: #4a7ba7;
-  --color-primary-light: #6fa3d2;
-  --color-primary-dark: #2e5f8a;
-  --color-michaelmas: #cd853f;
-  --color-hilary: #6495ed;
-  --color-trinity: #3cb371;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  --theme-name: 'dark';
+  
+  /* Inverted colors for maximum contrast */
+  --color-primary: #ffffff;
+  --color-primary-hover: #cccccc;
+  --color-accent: #ff0000;
+  
+  /* Dark term colors */
+  --color-michaelmas: #ff6666;
+  --color-hilary: #6666ff;
+  --color-trinity: #66ff66;
+  
+  /* Dark neutrals */
+  --color-background: #000000;
+  --color-surface: #111111;
+  --color-border: #ffffff;
+  --color-text: #ffffff;
+  --color-text-muted: #999999;
 }
 
-/* Theme toggle button adjustments for light/dark modes */
-[data-theme="light"] .theme-toggle {
-  background: rgba(0, 33, 71, 0.1);
-  border-color: rgba(0, 33, 71, 0.3);
-  color: var(--color-primary);
+/* Dark theme specific overrides */
+[data-theme="dark"] .app-header {
+  background-color: var(--color-background);
+  border-bottom-color: var(--color-border);
 }
 
-[data-theme="light"] .theme-toggle:hover {
-  background: rgba(0, 33, 71, 0.2);
-  border-color: rgba(0, 33, 71, 0.5);
-}
-
-[data-theme="light"] .theme-toggle:focus {
-  outline-color: var(--color-primary);
+[data-theme="dark"] .app-footer {
+  background-color: var(--color-background);
+  border-top-color: var(--color-border);
 }
 
 [data-theme="dark"] .theme-toggle {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: white;
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 [data-theme="dark"] .theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-[data-theme="dark"] .theme-toggle:focus {
-  outline-color: white;
-}
-
-/* Dark mode specific adjustments */
-[data-theme="dark"] .app-header {
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--color-primary);
+  color: var(--color-background);
 }
 
 [data-theme="dark"] .calendar-day-header {
   background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  border-color: var(--color-border);
 }
 
 [data-theme="dark"] .calendar-day.today {
-  background-color: #3d3d00;
+  background-color: var(--color-primary);
+  color: var(--color-background);
 }
 
-[data-theme="dark"] .calendar-day.selected {
-  background-color: #003d4d;
+[data-theme="dark"] .calendar-day.today .day-number {
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .calendar-day.today .term-week-badge {
+  background: var(--color-background);
+  color: var(--color-primary);
 }
 
 [data-theme="dark"] .search-button {
-  background-color: var(--color-primary);
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 [data-theme="dark"] .search-button:hover {
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .nav-button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+[data-theme="dark"] th {
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 [data-theme="dark"] .loading-overlay {
-  background-color: rgba(26, 26, 26, 0.9);
+  background-color: var(--color-background);
 }
 
 [data-theme="dark"] .loading-spinner {
   border-color: var(--color-border);
-  border-top-color: var(--color-primary);
-}
-
-[data-theme="dark"] .result-success {
-  background-color: #1e4e2a;
-  color: #a3d5b1;
-  border-left-color: #52c41a;
-}
-
-[data-theme="dark"] .result-info {
-  background-color: #1e3a4e;
-  color: #a3c5d5;
-  border-left-color: #40a9ff;
-}
-
-[data-theme="dark"] .result-warning {
-  background-color: #4e3e1e;
-  color: #d5c5a3;
-  border-left-color: #faad14;
+  color: var(--color-text);
 }
 
 [data-theme="dark"] .result-error {
-  background-color: #4e1e1e;
-  color: #d5a3a3;
-  border-left-color: #ff4d4f;
+  background-color: #330000;
+}
+
+[data-theme="dark"] .pwa-install-prompt {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-top-color: var(--color-accent);
+}
+
+[data-theme="dark"] .pwa-install-button {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .pwa-install-button:hover {
+  background: transparent;
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] .suggestion-item:hover,
+[data-theme="dark"] .suggestion-item.selected {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Focus styles for dark theme */
+[data-theme="dark"] a:focus,
+[data-theme="dark"] button:focus,
+[data-theme="dark"] .calendar-day:focus {
+  outline-color: var(--color-primary);
+}
+
+/* Input styles for dark theme */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background-color: var(--color-background);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+  border-color: var(--color-primary);
+}
+
+/* Skip link dark theme */
+[data-theme="dark"] .skip-link {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .skip-link:focus {
+  outline-color: var(--color-primary);
 }
 
 /* High contrast mode */
@@ -204,12 +165,10 @@
     --color-text-muted: #404040;
   }
   
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-border: #ffffff;
-      --color-text: #ffffff;
-      --color-text-muted: #c0c0c0;
-    }
+  [data-theme="dark"] {
+    --color-border: #ffffff;
+    --color-text: #ffffff;
+    --color-text-muted: #c0c0c0;
   }
   
   .calendar-day {
@@ -221,25 +180,9 @@
   }
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
-  .loading-spinner {
-    animation: none;
-    border: 4px solid var(--color-primary);
-  }
-}
-
 /* Focus visible for keyboard navigation */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: var(--border-width-thick) solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -248,15 +191,16 @@
   outline: none;
 }
 
-/* Print mode overrides */
+/* Print mode overrides - Always use light theme */
 @media print {
-  :root {
-    --color-background: white;
-    --color-surface: white;
+  :root,
+  [data-theme="dark"] {
+    --color-primary: #000000;
+    --color-background: #ffffff;
+    --color-surface: #f0f0f0;
     --color-border: #000000;
     --color-text: #000000;
     --color-text-muted: #666666;
-    --color-primary: #000000;
   }
   
   * {
