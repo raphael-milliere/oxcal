@@ -53,6 +53,8 @@
   justify-content: center;
   min-width: 50px;
   height: 50px;
+  position: relative;
+  overflow: hidden;
 }
 
 .theme-toggle:hover {
@@ -69,26 +71,36 @@
   width: 24px;
   height: 24px;
   transition: transform var(--transition-fast), opacity var(--transition-fast);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
+/* Hide all icons by default */
 .theme-icon-light,
 .theme-icon-dark {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
-/* Show moon icon when in light mode (to switch to dark) */
-[data-theme="light"] .theme-icon-dark,
-:root:not([data-theme]) .theme-icon-dark {
-  display: block;
+/* Show appropriate icon based on theme */
+/* Light mode or no theme set: show moon icon (to switch to dark) */
+:root:not([data-theme="dark"]) .theme-icon-dark {
+  opacity: 1;
+  visibility: visible;
 }
 
-/* Show sun icon when in dark mode (to switch to light) */
+/* Dark mode: show sun icon (to switch to light) */
 [data-theme="dark"] .theme-icon-light {
-  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
+/* Hover effect */
 .theme-toggle:hover .theme-icon {
-  transform: rotate(20deg);
+  transform: translate(-50%, -50%) rotate(20deg);
 }
 
 /* Main Content */
