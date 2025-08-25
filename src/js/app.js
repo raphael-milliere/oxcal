@@ -6,6 +6,7 @@ import { loadTermsData, getCurrentAcademicYear, findTermWeekForDate } from './da
 import { getToday, formatDate } from './data/dateUtils.js';
 import { Calendar } from './components/calendar.js';
 import { search, generateSuggestions, getSuggestionHTML } from './search/index.js';
+import themeManager from './themeManager.js';
 import './pwa.js';
 
 // Application state
@@ -16,7 +17,8 @@ let appState = {
   selectedDate: null,
   calendar: null,
   searchResults: null,
-  suggestions: []
+  suggestions: [],
+  selectedSuggestionIndex: -1
 };
 
 /**
@@ -76,6 +78,26 @@ function initializeCalendar() {
  * Initialize event listeners
  */
 function initializeEventListeners() {
+  // Theme toggle
+  const themeToggle = document.getElementById('theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const newTheme = themeManager.toggle();
+      // Update button aria-label
+      themeToggle.setAttribute('aria-label', 
+        newTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      themeToggle.setAttribute('title',
+        newTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    });
+    
+    // Set initial aria-label based on current theme
+    const currentTheme = themeManager.getTheme();
+    themeToggle.setAttribute('aria-label',
+      currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    themeToggle.setAttribute('title',
+      currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  
   // Search functionality
   const searchButton = document.getElementById('search-button');
   const searchInput = document.getElementById('date-search');
@@ -93,6 +115,9 @@ function initializeEventListeners() {
     
     // Add input handler for suggestions
     searchInput.addEventListener('input', handleSearchInput);
+    
+    // Add keyboard navigation for suggestions
+    searchInput.addEventListener('keydown', handleSearchKeyDown);
     
     // Hide suggestions when clicking outside
     document.addEventListener('click', (e) => {
@@ -217,7 +242,79 @@ function handleSearchInput(e) {
   // Generate and display suggestions
   const suggestions = generateSuggestions(query);
   appState.suggestions = suggestions;
+  appState.selectedSuggestionIndex = -1;
   displaySuggestions(suggestions);
+}
+
+/**
+ * Handle keyboard navigation in search input
+ */
+function handleSearchKeyDown(e) {
+  const suggestionsContainer = document.getElementById('search-suggestions');
+  if (!suggestionsContainer || !suggestionsContainer.classList.contains('active')) {
+    return;
+  }
+  
+  const key = e.key;
+  let handled = false;
+  
+  switch (key) {
+    case 'ArrowDown':
+      e.preventDefault();
+      appState.selectedSuggestionIndex = Math.min(
+        appState.selectedSuggestionIndex + 1,
+        appState.suggestions.length - 1
+      );
+      updateSuggestionSelection();
+      handled = true;
+      break;
+      
+    case 'ArrowUp':
+      e.preventDefault();
+      appState.selectedSuggestionIndex = Math.max(
+        appState.selectedSuggestionIndex - 1,
+        -1
+      );
+      updateSuggestionSelection();
+      handled = true;
+      break;
+      
+    case 'Enter':
+      if (appState.selectedSuggestionIndex >= 0) {
+        e.preventDefault();
+        selectSuggestion(appState.selectedSuggestionIndex);
+        handled = true;
+      }
+      break;
+      
+    case 'Escape':
+      e.preventDefault();
+      hideSuggestions();
+      handled = true;
+      break;
+      
+    case 'Tab':
+      // Allow Tab to move to next suggestion or exit
+      if (appState.suggestions.length > 0) {
+        if (!e.shiftKey && appState.selectedSuggestionIndex < appState.suggestions.length - 1) {
+          e.preventDefault();
+          appState.selectedSuggestionIndex++;
+          updateSuggestionSelection();
+          handled = true;
+        } else if (e.shiftKey && appState.selectedSuggestionIndex > 0) {
+          e.preventDefault();
+          appState.selectedSuggestionIndex--;
+          updateSuggestionSelection();
+          handled = true;
+        }
+      }
+      break;
+  }
+  
+  if (handled) {
+    // Announce to screen readers
+    announceSelectedSuggestion();
+  }
 }
 
 /**
@@ -232,6 +329,8 @@ function displaySuggestions(suggestions) {
       const suggestionsDiv = document.createElement('div');
       suggestionsDiv.id = 'search-suggestions';
       suggestionsDiv.className = 'search-suggestions';
+      suggestionsDiv.setAttribute('role', 'listbox');
+      suggestionsDiv.setAttribute('aria-label', 'Search suggestions');
       searchContainer.appendChild(suggestionsDiv);
     }
   }
@@ -244,20 +343,87 @@ function displaySuggestions(suggestions) {
     return;
   }
   
-  const html = suggestions.map(s => getSuggestionHTML(s)).join('');
+  const html = suggestions.map((s, index) => {
+    const isSelected = index === appState.selectedSuggestionIndex;
+    return `
+      <div class="suggestion-item ${isSelected ? 'selected' : ''}" 
+           role="option" 
+           aria-selected="${isSelected}"
+           data-index="${index}">
+        ${getSuggestionHTML(s).match(/<div class="suggestion-text">(.*?)<\/div>/)?.[0] || ''}
+        ${getSuggestionHTML(s).match(/<div class="suggestion-description">(.*?)<\/div>/)?.[0] || ''}
+      </div>
+    `;
+  }).join('');
+  
   suggestionsContainer.innerHTML = html;
   suggestionsContainer.classList.add('active');
   
   // Add click handlers for suggestions
   suggestionsContainer.querySelectorAll('.suggestion-item').forEach((item, index) => {
     item.addEventListener('click', () => {
-      const input = document.getElementById('date-search');
-      if (input) {
-        input.value = suggestions[index].text;
-        handleSearch();
-      }
+      selectSuggestion(index);
+    });
+    
+    // Add hover handler to update selection
+    item.addEventListener('mouseenter', () => {
+      appState.selectedSuggestionIndex = index;
+      updateSuggestionSelection();
     });
   });
+}
+
+/**
+ * Update visual selection of suggestions
+ */
+function updateSuggestionSelection() {
+  const container = document.getElementById('search-suggestions');
+  if (!container) return;
+  
+  const items = container.querySelectorAll('.suggestion-item');
+  items.forEach((item, index) => {
+    if (index === appState.selectedSuggestionIndex) {
+      item.classList.add('selected');
+      item.setAttribute('aria-selected', 'true');
+    } else {
+      item.classList.remove('selected');
+      item.setAttribute('aria-selected', 'false');
+    }
+  });
+}
+
+/**
+ * Select a suggestion by index
+ */
+function selectSuggestion(index) {
+  if (index < 0 || index >= appState.suggestions.length) return;
+  
+  const input = document.getElementById('date-search');
+  if (input) {
+    input.value = appState.suggestions[index].text;
+    handleSearch();
+  }
+}
+
+/**
+ * Announce selected suggestion to screen readers
+ */
+function announceSelectedSuggestion() {
+  if (appState.selectedSuggestionIndex < 0) return;
+  
+  const suggestion = appState.suggestions[appState.selectedSuggestionIndex];
+  if (!suggestion) return;
+  
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.className = 'visually-hidden';
+  announcement.textContent = `${suggestion.text}, ${suggestion.description || ''}`;
+  
+  document.body.appendChild(announcement);
+  setTimeout(() => {
+    document.body.removeChild(announcement);
+  }, 1000);
 }
 
 /**
@@ -269,6 +435,7 @@ function hideSuggestions() {
     container.classList.remove('active');
     container.innerHTML = '';
   }
+  appState.selectedSuggestionIndex = -1;
 }
 
 /**

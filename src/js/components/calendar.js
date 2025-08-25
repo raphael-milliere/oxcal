@@ -15,6 +15,8 @@ export class Calendar {
     this.selectedDate = null;
     this.highlightedDates = [];
     this.listeners = {};
+    this.focusedDate = null;
+    this.keyboardNavEnabled = false;
     
     this.monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June',
@@ -22,6 +24,9 @@ export class Calendar {
     ];
     
     this.dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    // Bind keyboard event handler
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
   
   /**
@@ -157,10 +162,33 @@ export class Calendar {
     if (!isCurrentMonth) classes.push('other-month');
     if (isSameDay(date, new Date())) classes.push('today');
     if (this.selectedDate && isSameDay(date, this.selectedDate)) classes.push('selected');
+    if (this.focusedDate && isSameDay(date, this.focusedDate)) classes.push('focused');
     if (this.highlightedDates.some(d => isSameDay(d, date))) classes.push('highlighted');
     if (termWeek) classes.push(`term-${termWeek.term.toLowerCase()}`);
     
     dayDiv.className = classes.join(' ');
+    
+    // Set ARIA attributes
+    dayDiv.setAttribute('role', 'gridcell');
+    dayDiv.setAttribute('tabindex', isCurrentMonth && isSameDay(date, this.focusedDate || this.selectedDate || new Date()) ? '0' : '-1');
+    
+    const dateStr = formatDate(date, 'full');
+    let ariaLabel = dateStr;
+    if (termWeek) {
+      ariaLabel += `, ${termWeek.term} Term Week ${termWeek.week}`;
+    }
+    if (isSameDay(date, new Date())) {
+      ariaLabel += ', Today';
+    }
+    dayDiv.setAttribute('aria-label', ariaLabel);
+    
+    if (this.selectedDate && isSameDay(date, this.selectedDate)) {
+      dayDiv.setAttribute('aria-selected', 'true');
+    }
+    
+    if (isSameDay(date, new Date())) {
+      dayDiv.setAttribute('aria-current', 'date');
+    }
     
     // Create day content
     const dayNumber = document.createElement('div');
@@ -182,6 +210,14 @@ export class Calendar {
       }
     });
     
+    // Add focus handler for keyboard navigation
+    dayDiv.addEventListener('focus', () => {
+      if (isCurrentMonth) {
+        this.focusedDate = date;
+        this.keyboardNavEnabled = true;
+      }
+    });
+    
     // Add data attributes for testing
     dayDiv.setAttribute('data-date', date.toISOString().split('T')[0]);
     if (termWeek) {
@@ -198,14 +234,19 @@ export class Calendar {
   render() {
     if (!this.container) return;
     
+    // Remove existing keyboard listener
+    this.container.removeEventListener('keydown', this.handleKeyDown);
+    
     // Clear container
     this.container.innerHTML = '';
     
     // Add day headers
-    this.dayNames.forEach(dayName => {
+    this.dayNames.forEach((dayName, index) => {
       const header = document.createElement('div');
       header.className = 'calendar-day-header';
       header.textContent = dayName;
+      header.setAttribute('role', 'columnheader');
+      header.setAttribute('aria-label', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][index]);
       this.container.appendChild(header);
     });
     
@@ -219,6 +260,14 @@ export class Calendar {
       const dayCell = this.createDayCell(dayData);
       this.container.appendChild(dayCell);
     });
+    
+    // Add keyboard navigation
+    this.container.addEventListener('keydown', this.handleKeyDown);
+    
+    // Set initial focus if needed
+    if (!this.focusedDate) {
+      this.focusedDate = this.selectedDate || new Date();
+    }
   }
   
   /**
@@ -271,10 +320,156 @@ export class Calendar {
   }
   
   /**
+   * Handle keyboard navigation
+   * @param {KeyboardEvent} event - Keyboard event
+   */
+  handleKeyDown(event) {
+    if (!this.keyboardNavEnabled || !this.focusedDate) return;
+    
+    const key = event.key;
+    let newDate = new Date(this.focusedDate);
+    let handled = false;
+    
+    switch (key) {
+      case 'ArrowLeft':
+        newDate.setDate(newDate.getDate() - 1);
+        handled = true;
+        break;
+      case 'ArrowRight':
+        newDate.setDate(newDate.getDate() + 1);
+        handled = true;
+        break;
+      case 'ArrowUp':
+        newDate.setDate(newDate.getDate() - 7);
+        handled = true;
+        break;
+      case 'ArrowDown':
+        newDate.setDate(newDate.getDate() + 7);
+        handled = true;
+        break;
+      case 'Home':
+        // Go to start of week (Sunday)
+        newDate.setDate(newDate.getDate() - newDate.getDay());
+        handled = true;
+        break;
+      case 'End':
+        // Go to end of week (Saturday)
+        newDate.setDate(newDate.getDate() + (6 - newDate.getDay()));
+        handled = true;
+        break;
+      case 'PageUp':
+        if (event.shiftKey) {
+          // Previous year
+          newDate.setFullYear(newDate.getFullYear() - 1);
+        } else {
+          // Previous month
+          newDate.setMonth(newDate.getMonth() - 1);
+        }
+        handled = true;
+        break;
+      case 'PageDown':
+        if (event.shiftKey) {
+          // Next year
+          newDate.setFullYear(newDate.getFullYear() + 1);
+        } else {
+          // Next month
+          newDate.setMonth(newDate.getMonth() + 1);
+        }
+        handled = true;
+        break;
+      case 'Enter':
+      case ' ':
+        // Select the focused date
+        this.selectDate(this.focusedDate);
+        handled = true;
+        break;
+      case 'Escape':
+        // Clear selection
+        this.selectedDate = null;
+        this.render();
+        this.emit('select', { date: null });
+        handled = true;
+        break;
+    }
+    
+    if (handled) {
+      event.preventDefault();
+      
+      // Update focused date
+      const oldMonth = this.focusedDate.getMonth();
+      const oldYear = this.focusedDate.getFullYear();
+      const newMonth = newDate.getMonth();
+      const newYear = newDate.getFullYear();
+      
+      this.focusedDate = newDate;
+      
+      // Check if we need to change month view
+      if (oldMonth !== newMonth || oldYear !== newYear) {
+        this.setMonth(newDate);
+        this.emit('navigate', { month: newDate });
+      } else {
+        // Update focus within current month
+        this.updateFocus();
+      }
+      
+      // Announce change to screen readers
+      this.announceDate(newDate);
+    }
+  }
+  
+  /**
+   * Update focus to the focused date
+   */
+  updateFocus() {
+    // Remove tabindex from all cells
+    const cells = this.container.querySelectorAll('.calendar-day');
+    cells.forEach(cell => {
+      cell.setAttribute('tabindex', '-1');
+      cell.classList.remove('focused');
+    });
+    
+    // Set tabindex and focus on the focused date
+    if (this.focusedDate) {
+      const focusedDateStr = this.focusedDate.toISOString().split('T')[0];
+      const focusedCell = this.container.querySelector(`[data-date="${focusedDateStr}"]`);
+      if (focusedCell && !focusedCell.classList.contains('other-month')) {
+        focusedCell.setAttribute('tabindex', '0');
+        focusedCell.classList.add('focused');
+        focusedCell.focus();
+      }
+    }
+  }
+  
+  /**
+   * Announce date to screen readers
+   * @param {Date} date - Date to announce
+   */
+  announceDate(date) {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.className = 'visually-hidden';
+    
+    const termWeek = findTermWeekForDate(date);
+    let text = formatDate(date, 'full');
+    if (termWeek) {
+      text += `, ${termWeek.term} Term Week ${termWeek.week}`;
+    }
+    
+    announcement.textContent = text;
+    document.body.appendChild(announcement);
+    
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
+  }
+  
+  /**
    * Destroy the calendar and clean up
    */
   destroy() {
     if (this.container) {
+      this.container.removeEventListener('keydown', this.handleKeyDown);
       this.container.innerHTML = '';
     }
     this.listeners = {};

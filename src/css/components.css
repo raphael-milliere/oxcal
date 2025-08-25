@@ -60,6 +60,24 @@
   animation: highlight-pulse 1s ease-in-out;
 }
 
+.calendar-day.focused {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  z-index: 1;
+  position: relative;
+}
+
+.calendar-day:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  z-index: 1;
+  position: relative;
+}
+
+.calendar-day:focus:not(:focus-visible) {
+  outline: none;
+}
+
 @keyframes highlight-pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
@@ -308,8 +326,14 @@
   border-bottom: none;
 }
 
-.suggestion-item:hover {
+.suggestion-item:hover,
+.suggestion-item.selected {
   background: var(--color-surface);
+}
+
+.suggestion-item.selected {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
 }
 
 .suggestion-text {
