@@ -28,15 +28,19 @@
   padding: var(--spacing-sm);
   position: relative;
   transition: background-color var(--transition-fast);
+  cursor: pointer;
 }
 
-.calendar-day:hover {
+.calendar-day:hover:not(.other-month) {
   background-color: var(--color-surface);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .calendar-day.other-month {
   background-color: var(--color-surface);
   opacity: 0.5;
+  cursor: default;
 }
 
 .calendar-day.today {
@@ -48,6 +52,19 @@
   background-color: #d1ecf1;
   outline: 2px solid var(--color-primary);
   outline-offset: -2px;
+}
+
+/* Term-specific day backgrounds */
+.calendar-day.term-michaelmas:not(.other-month) {
+  background-color: rgba(156, 39, 176, 0.05);
+}
+
+.calendar-day.term-hilary:not(.other-month) {
+  background-color: rgba(33, 150, 243, 0.05);
+}
+
+.calendar-day.term-trinity:not(.other-month) {
+  background-color: rgba(76, 175, 80, 0.05);
 }
 
 /* Day Number */
