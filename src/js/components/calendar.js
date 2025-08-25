@@ -13,6 +13,7 @@ export class Calendar {
     this.container = container;
     this.currentMonth = new Date();
     this.selectedDate = null;
+    this.highlightedDates = [];
     this.listeners = {};
     
     this.monthNames = [
@@ -51,6 +52,23 @@ export class Calendar {
     this.selectedDate = date;
     this.render();
     this.emit('select', { date });
+  }
+  
+  /**
+   * Highlight multiple dates (e.g., search results)
+   * @param {Array<Date>} dates - Dates to highlight
+   */
+  highlightDates(dates) {
+    this.highlightedDates = dates || [];
+    this.render();
+  }
+  
+  /**
+   * Clear all highlighted dates
+   */
+  clearHighlights() {
+    this.highlightedDates = [];
+    this.render();
   }
   
   /**
@@ -139,6 +157,7 @@ export class Calendar {
     if (!isCurrentMonth) classes.push('other-month');
     if (isSameDay(date, new Date())) classes.push('today');
     if (this.selectedDate && isSameDay(date, this.selectedDate)) classes.push('selected');
+    if (this.highlightedDates.some(d => isSameDay(d, date))) classes.push('highlighted');
     if (termWeek) classes.push(`term-${termWeek.term.toLowerCase()}`);
     
     dayDiv.className = classes.join(' ');

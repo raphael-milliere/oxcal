@@ -54,6 +54,18 @@
   outline-offset: -2px;
 }
 
+.calendar-day.highlighted {
+  background-color: #ffe082 !important;
+  box-shadow: inset 0 0 0 2px #ffa000;
+  animation: highlight-pulse 1s ease-in-out;
+}
+
+@keyframes highlight-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 /* Term-specific day backgrounds */
 .calendar-day.term-michaelmas:not(.other-month) {
   background-color: rgba(156, 39, 176, 0.05);
@@ -258,6 +270,68 @@
 .tooltip:hover .tooltip-content {
   opacity: 1;
   visibility: visible;
+}
+
+/* Search Suggestions */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--spacing-xs);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.search-suggestions.active {
+  display: block;
+  animation: slideDown 0.2s ease-out;
+}
+
+.suggestion-item {
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background: var(--color-surface);
+}
+
+.suggestion-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.suggestion-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive adjustments */
