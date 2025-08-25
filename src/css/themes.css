@@ -88,7 +88,7 @@
 }
 
 /* Manual dark mode class */
-body.dark-mode {
+[data-theme="dark"] {
   --color-background: #1a1a1a;
   --color-surface: #2d2d2d;
   --color-border: #404040;
@@ -105,61 +105,92 @@ body.dark-mode {
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
 }
 
+/* Theme toggle button adjustments for light/dark modes */
+[data-theme="light"] .theme-toggle {
+  background: rgba(0, 33, 71, 0.1);
+  border-color: rgba(0, 33, 71, 0.3);
+  color: var(--color-primary);
+}
+
+[data-theme="light"] .theme-toggle:hover {
+  background: rgba(0, 33, 71, 0.2);
+  border-color: rgba(0, 33, 71, 0.5);
+}
+
+[data-theme="light"] .theme-toggle:focus {
+  outline-color: var(--color-primary);
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .theme-toggle:focus {
+  outline-color: white;
+}
+
 /* Dark mode specific adjustments */
-body.dark-mode .app-header {
+[data-theme="dark"] .app-header {
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
 }
 
-body.dark-mode .calendar-day-header {
+[data-theme="dark"] .calendar-day-header {
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
 }
 
-body.dark-mode .calendar-day.today {
+[data-theme="dark"] .calendar-day.today {
   background-color: #3d3d00;
 }
 
-body.dark-mode .calendar-day.selected {
+[data-theme="dark"] .calendar-day.selected {
   background-color: #003d4d;
 }
 
-body.dark-mode .search-button {
+[data-theme="dark"] .search-button {
   background-color: var(--color-primary);
 }
 
-body.dark-mode .search-button:hover {
+[data-theme="dark"] .search-button:hover {
   background-color: var(--color-primary-light);
 }
 
-body.dark-mode .loading-overlay {
+[data-theme="dark"] .loading-overlay {
   background-color: rgba(26, 26, 26, 0.9);
 }
 
-body.dark-mode .loading-spinner {
+[data-theme="dark"] .loading-spinner {
   border-color: var(--color-border);
   border-top-color: var(--color-primary);
 }
 
-body.dark-mode .result-success {
+[data-theme="dark"] .result-success {
   background-color: #1e4e2a;
   color: #a3d5b1;
   border-left-color: #52c41a;
 }
 
-body.dark-mode .result-info {
+[data-theme="dark"] .result-info {
   background-color: #1e3a4e;
   color: #a3c5d5;
   border-left-color: #40a9ff;
 }
 
-body.dark-mode .result-warning {
+[data-theme="dark"] .result-warning {
   background-color: #4e3e1e;
   color: #d5c5a3;
   border-left-color: #faad14;
 }
 
-body.dark-mode .result-error {
+[data-theme="dark"] .result-error {
   background-color: #4e1e1e;
   color: #d5a3a3;
   border-left-color: #ff4d4f;

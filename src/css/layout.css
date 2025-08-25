@@ -48,7 +48,6 @@
   color: white;
   cursor: pointer;
   transition: all var(--transition-fast);
-  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,18 +65,30 @@
   outline-offset: 2px;
 }
 
+.theme-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
 .theme-icon-light,
 .theme-icon-dark {
   display: none;
 }
 
-body.light-mode .theme-icon-dark,
-body:not(.dark-mode):not(.light-mode) .theme-icon-dark {
-  display: inline;
+/* Show moon icon when in light mode (to switch to dark) */
+[data-theme="light"] .theme-icon-dark,
+:root:not([data-theme]) .theme-icon-dark {
+  display: block;
 }
 
-body.dark-mode .theme-icon-light {
-  display: inline;
+/* Show sun icon when in dark mode (to switch to light) */
+[data-theme="dark"] .theme-icon-light {
+  display: block;
+}
+
+.theme-toggle:hover .theme-icon {
+  transform: rotate(20deg);
 }
 
 /* Main Content */
