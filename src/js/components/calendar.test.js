@@ -76,8 +76,10 @@ describe('Calendar Component', () => {
     it('should include previous month padding days', () => {
       const grid = calendar.getMonthGrid(2024, 10); // November 2024
       const firstDay = new Date(2024, 10, 1).getDay(); // Friday = 5
+      // Adjust for Monday start: Friday (5) means 4 padding days needed (Mon-Thu)
+      const expectedPadding = firstDay === 0 ? 6 : firstDay - 1;
       const prevMonthDays = grid.filter(d => d.isPreviousMonth);
-      expect(prevMonthDays).toHaveLength(firstDay);
+      expect(prevMonthDays).toHaveLength(expectedPadding);
     });
     
     it('should include next month padding days', () => {
@@ -138,8 +140,8 @@ describe('Calendar Component', () => {
       calendar.render();
       const headers = container.querySelectorAll('.calendar-day-header');
       expect(headers).toHaveLength(7);
-      expect(headers[0].textContent).toBe('Sun');
-      expect(headers[6].textContent).toBe('Sat');
+      expect(headers[0].textContent).toBe('Mon');
+      expect(headers[6].textContent).toBe('Sun');
     });
     
     it('should render 42 day cells', () => {
