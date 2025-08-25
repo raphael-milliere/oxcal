@@ -142,26 +142,36 @@ describe('dateUtils', () => {
   });
 
   describe('getWeekStart', () => {
-    it('should return Sunday of the week', () => {
+    it('should return Monday of the week', () => {
       const result = getWeekStart('2024-10-15'); // Tuesday
-      expect(toISODateString(result)).toBe('2024-10-13'); // Sunday
+      expect(toISODateString(result)).toBe('2024-10-14'); // Monday
     });
 
-    it('should return same date if already Sunday', () => {
+    it('should return Monday for Sunday', () => {
       const result = getWeekStart('2024-10-13'); // Sunday
-      expect(toISODateString(result)).toBe('2024-10-13');
+      expect(toISODateString(result)).toBe('2024-10-07'); // Previous Monday
+    });
+
+    it('should return same date if already Monday', () => {
+      const result = getWeekStart('2024-10-14'); // Monday
+      expect(toISODateString(result)).toBe('2024-10-14');
     });
   });
 
   describe('getWeekEnd', () => {
-    it('should return Saturday of the week', () => {
+    it('should return Sunday of the week', () => {
       const result = getWeekEnd('2024-10-15'); // Tuesday
-      expect(toISODateString(result)).toBe('2024-10-19'); // Saturday
+      expect(toISODateString(result)).toBe('2024-10-20'); // Sunday
     });
 
-    it('should return same date if already Saturday', () => {
+    it('should return same date if already Sunday', () => {
+      const result = getWeekEnd('2024-10-20'); // Sunday
+      expect(toISODateString(result)).toBe('2024-10-20');
+    });
+
+    it('should return Sunday for Saturday', () => {
       const result = getWeekEnd('2024-10-19'); // Saturday
-      expect(toISODateString(result)).toBe('2024-10-19');
+      expect(toISODateString(result)).toBe('2024-10-20'); // Next Sunday
     });
   });
 

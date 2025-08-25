@@ -151,26 +151,28 @@ export function addDays(date, days) {
 }
 
 /**
- * Get the Sunday starting a week for any date
+ * Get the Monday starting a week for any date
  * @param {Date|string} date - Any date in the week
- * @returns {Date} Sunday of that week
+ * @returns {Date} Monday of that week
  */
 export function getWeekStart(date) {
   const d = typeof date === 'string' ? parseISODate(date) : new Date(date);
   const day = d.getDay();
-  const diff = d.getDate() - day;
+  // If Sunday (0), go back 6 days to Monday; otherwise go back (day - 1) days
+  const diff = d.getDate() - (day === 0 ? 6 : day - 1);
   return new Date(d.setDate(diff));
 }
 
 /**
- * Get the Saturday ending a week for any date
+ * Get the Sunday ending a week for any date
  * @param {Date|string} date - Any date in the week
- * @returns {Date} Saturday of that week
+ * @returns {Date} Sunday of that week
  */
 export function getWeekEnd(date) {
   const d = typeof date === 'string' ? parseISODate(date) : new Date(date);
   const day = d.getDay();
-  const diff = d.getDate() - day + 6;
+  // If Sunday (0), it's already the end of week; otherwise add (7 - day) days
+  const diff = d.getDate() + (day === 0 ? 0 : 7 - day);
   return new Date(d.setDate(diff));
 }
 

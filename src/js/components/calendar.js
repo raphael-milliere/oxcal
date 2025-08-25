@@ -23,7 +23,7 @@ export class Calendar {
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     
-    this.dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    this.dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     
     // Bind keyboard event handler
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -85,7 +85,8 @@ export class Calendar {
   getMonthGrid(year, month) {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-    const startPadding = firstDay.getDay();
+    // Adjust for Monday start (0 = Sunday becomes 6, 1 = Monday becomes 0, etc.)
+    const startPadding = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
     const totalDays = lastDay.getDate();
     
     const grid = [];
@@ -254,7 +255,7 @@ export class Calendar {
       header.className = 'calendar-day-header';
       header.textContent = dayName;
       header.setAttribute('role', 'columnheader');
-      header.setAttribute('aria-label', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][index]);
+      header.setAttribute('aria-label', ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][index]);
       this.container.appendChild(header);
     });
     
@@ -356,13 +357,17 @@ export class Calendar {
         handled = true;
         break;
       case 'Home':
-        // Go to start of week (Sunday)
-        newDate.setDate(newDate.getDate() - newDate.getDay());
+        // Go to start of week (Monday)
+        const dayOfWeek = newDate.getDay();
+        const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        newDate.setDate(newDate.getDate() + daysToMonday);
         handled = true;
         break;
       case 'End':
-        // Go to end of week (Saturday)
-        newDate.setDate(newDate.getDate() + (6 - newDate.getDay()));
+        // Go to end of week (Sunday)
+        const currentDay = newDate.getDay();
+        const daysToSunday = currentDay === 0 ? 0 : 7 - currentDay;
+        newDate.setDate(newDate.getDate() + daysToSunday);
         handled = true;
         break;
       case 'PageUp':
