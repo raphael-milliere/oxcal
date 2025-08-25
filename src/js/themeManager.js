@@ -22,6 +22,12 @@ class ThemeManager {
     // Get theme preference
     this.currentTheme = this.getStoredTheme() || this.getSystemPreference();
     
+    // Ensure data-theme attribute is set immediately
+    const root = document.documentElement;
+    if (!root.hasAttribute('data-theme')) {
+      root.setAttribute('data-theme', this.currentTheme);
+    }
+    
     // Apply initial theme
     this.applyTheme(this.currentTheme);
     

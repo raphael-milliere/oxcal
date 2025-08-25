@@ -84,20 +84,29 @@ function initializeEventListeners() {
   // Theme toggle
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
+    // Remove any existing listeners to prevent duplicates
+    const newToggle = themeToggle.cloneNode(true);
+    themeToggle.parentNode.replaceChild(newToggle, themeToggle);
+    
+    // Add click listener to the fresh element
+    newToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const newTheme = themeManager.toggle();
+      
       // Update button aria-label
-      themeToggle.setAttribute('aria-label', 
+      newToggle.setAttribute('aria-label', 
         newTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-      themeToggle.setAttribute('title',
+      newToggle.setAttribute('title',
         newTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     });
     
     // Set initial aria-label based on current theme
     const currentTheme = themeManager.getTheme();
-    themeToggle.setAttribute('aria-label',
+    newToggle.setAttribute('aria-label',
       currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-    themeToggle.setAttribute('title',
+    newToggle.setAttribute('title',
       currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
   }
   
