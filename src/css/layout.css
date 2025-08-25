@@ -71,6 +71,7 @@
 }
 
 .search-input-group {
+  position: relative;
   display: flex;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);

@@ -5,6 +5,7 @@
 import { loadTermsData, getCurrentAcademicYear, findTermWeekForDate } from './data/termService.js';
 import { getToday, formatDate } from './data/dateUtils.js';
 import { Calendar } from './components/calendar.js';
+import { search, generateSuggestions, getSuggestionHTML } from './search/index.js';
 
 // Application state
 let appState = {
@@ -12,7 +13,9 @@ let appState = {
   currentDate: getToday(),
   currentMonth: new Date(),
   selectedDate: null,
-  calendar: null
+  calendar: null,
+  searchResults: null,
+  suggestions: []
 };
 
 /**
@@ -86,6 +89,16 @@ function initializeEventListeners() {
         handleSearch();
       }
     });
+    
+    // Add input handler for suggestions
+    searchInput.addEventListener('input', handleSearchInput);
+    
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-input-group')) {
+        hideSuggestions();
+      }
+    });
   }
   
   // Calendar navigation
@@ -121,20 +134,140 @@ function handleSearch() {
   const query = input.value.trim();
   if (!query) {
     resultDiv.classList.remove('active');
+    hideSuggestions();
     return;
   }
   
-  // For now, just show a placeholder result
-  resultDiv.innerHTML = `
-    <div class="result-info">
-      <div class="result-title">Search Results</div>
-      <div class="result-details">
-        Search functionality will be implemented in Stage 3.
-        <br>Query: "${query}"
+  // Execute search
+  const results = search(query);
+  appState.searchResults = results;
+  
+  if (results.success) {
+    displaySearchResults(results);
+    
+    // Navigate calendar to show results
+    if (results.dates && results.dates.length > 0) {
+      const firstDate = results.dates[0];
+      if (appState.calendar) {
+        appState.calendar.setMonth(firstDate);
+        appState.calendar.highlightDates(results.dates);
+      }
+    }
+  } else {
+    // Show error
+    resultDiv.innerHTML = `
+      <div class="result-info error">
+        <div class="result-title">No Results Found</div>
+        <div class="result-details">
+          ${results.error || 'Could not parse your query. Try "Week 5 Michaelmas 2025" or "25 March 2025".'}
+        </div>
       </div>
-    </div>
-  `;
+    `;
+    resultDiv.classList.add('active');
+  }
+  
+  hideSuggestions();
+}
+
+/**
+ * Display search results
+ */
+function displaySearchResults(results) {
+  const resultDiv = document.getElementById('search-result');
+  if (!resultDiv) return;
+  
+  let html = '';
+  
+  if (results.type === 'week-range') {
+    html = `
+      <div class="result-info">
+        <div class="result-title">${results.displayText}</div>
+        <div class="result-details">
+          ${results.detailText}
+        </div>
+      </div>
+    `;
+  } else if (results.type === 'single-date') {
+    html = `
+      <div class="result-info">
+        <div class="result-title">${results.displayText}</div>
+        <div class="result-details">
+          ${results.detailText}
+        </div>
+      </div>
+    `;
+  }
+  
+  resultDiv.innerHTML = html;
   resultDiv.classList.add('active');
+}
+
+/**
+ * Handle search input changes for suggestions
+ */
+function handleSearchInput(e) {
+  const query = e.target.value;
+  
+  if (query.length < 2) {
+    hideSuggestions();
+    return;
+  }
+  
+  // Generate and display suggestions
+  const suggestions = generateSuggestions(query);
+  appState.suggestions = suggestions;
+  displaySuggestions(suggestions);
+}
+
+/**
+ * Display search suggestions
+ */
+function displaySuggestions(suggestions) {
+  const container = document.getElementById('search-suggestions');
+  if (!container) {
+    // Create suggestions container if it doesn't exist
+    const searchContainer = document.querySelector('.search-input-group');
+    if (searchContainer) {
+      const suggestionsDiv = document.createElement('div');
+      suggestionsDiv.id = 'search-suggestions';
+      suggestionsDiv.className = 'search-suggestions';
+      searchContainer.appendChild(suggestionsDiv);
+    }
+  }
+  
+  const suggestionsContainer = document.getElementById('search-suggestions');
+  if (!suggestionsContainer) return;
+  
+  if (suggestions.length === 0) {
+    hideSuggestions();
+    return;
+  }
+  
+  const html = suggestions.map(s => getSuggestionHTML(s)).join('');
+  suggestionsContainer.innerHTML = html;
+  suggestionsContainer.classList.add('active');
+  
+  // Add click handlers for suggestions
+  suggestionsContainer.querySelectorAll('.suggestion-item').forEach((item, index) => {
+    item.addEventListener('click', () => {
+      const input = document.getElementById('date-search');
+      if (input) {
+        input.value = suggestions[index].text;
+        handleSearch();
+      }
+    });
+  });
+}
+
+/**
+ * Hide search suggestions
+ */
+function hideSuggestions() {
+  const container = document.getElementById('search-suggestions');
+  if (container) {
+    container.classList.remove('active');
+    container.innerHTML = '';
+  }
 }
 
 /**
