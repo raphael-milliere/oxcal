@@ -32,16 +32,31 @@
   <script type="module" src="/src/js/app.js"></script>
 </head>
 <body>
+  <!-- Skip Navigation Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
   <!-- Header -->
   <header class="app-header" role="banner">
     <div class="container">
-      <h1 class="app-title">OxCal</h1>
-      <p class="app-subtitle">Oxford University Term Calendar</p>
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="app-title">OxCal</h1>
+          <p class="app-subtitle">Oxford University Term Calendar</p>
+        </div>
+        <button type="button" 
+                id="theme-toggle" 
+                class="theme-toggle" 
+                aria-label="Toggle dark mode"
+                title="Toggle dark mode">
+          <span class="theme-icon-light" aria-hidden="true">☀️</span>
+          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="app-main" role="main">
+  <main class="app-main" role="main" id="main-content">
     <div class="container">
       
       <!-- Search Section -->
