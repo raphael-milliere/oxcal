@@ -5,26 +5,26 @@
   --theme-name: 'light';
 }
 
-/* Dark Theme - Inverted brutalist */
+/* Dark Theme - Oxford Blue brutalist */
 [data-theme="dark"] {
   --theme-name: 'dark';
   
-  /* Inverted colors for maximum contrast */
-  --color-primary: #ffffff;
-  --color-primary-hover: #cccccc;
-  --color-accent: #ff0000;
+  /* Oxford Blue dark palette */
+  --color-primary: #4A7BA7;  /* Light Oxford Blue */
+  --color-primary-hover: #6FA3D2;
+  --color-accent: #D4626D;  /* Light Oxford Red */
   
-  /* Dark term colors */
-  --color-michaelmas: #ff6666;
-  --color-hilary: #6666ff;
-  --color-trinity: #66ff66;
+  /* Dark term colors - Oxford-inspired */
+  --color-michaelmas: #D4626D;  /* Light Oxford Red */
+  --color-hilary: #5E8AB4;  /* Medium Oxford Blue */
+  --color-trinity: #4A8B6F;  /* Medium Oxford Green */
   
-  /* Dark neutrals */
-  --color-background: #000000;
-  --color-surface: #111111;
-  --color-border: #ffffff;
-  --color-text: #ffffff;
-  --color-text-muted: #999999;
+  /* Dark neutrals - Oxford Blue tinted */
+  --color-background: #001122;  /* Very dark Oxford Blue */
+  --color-surface: #001833;  /* Dark Oxford Blue */
+  --color-border: #003366;  /* Medium Oxford Blue */
+  --color-text: #E8F0F7;  /* Light blue-tinted white */
+  --color-text-muted: #8FA9C7;
 }
 
 /* Dark theme specific overrides */
