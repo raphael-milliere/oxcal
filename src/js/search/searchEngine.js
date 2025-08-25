@@ -4,7 +4,7 @@
 
 import { parseQuery } from './queryParser.js';
 import { getWeekData, findTermWeekForDate } from '../data/termService.js';
-import { parseISODate, addDays, formatDate } from '../data/dateUtils.js';
+import { parseISODate, addDays, formatDate, toISODateString } from '../data/dateUtils.js';
 
 /**
  * Execute a search query and return results
@@ -159,10 +159,9 @@ function searchDayTermWeek(parsed) {
     const startDay = weekStart.getDay();
     
     // Calculate days to add from Sunday
-    let daysToAdd = dayOfWeek - startDay;
-    if (daysToAdd < 0) {
-      daysToAdd += 7;
-    }
+    // Oxford weeks always start on Sunday (day 0)
+    // So we just add the dayOfWeek value directly
+    const daysToAdd = dayOfWeek;
     
     const targetDate = addDays(weekStart, daysToAdd);
     
@@ -181,7 +180,7 @@ function searchDayTermWeek(parsed) {
     return {
       success: true,
       type: 'single-date',
-      date: targetDate.toISOString().split('T')[0],
+      date: toISODateString(targetDate),
       dates: [targetDate],
       term: term,
       week: week,

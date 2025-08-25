@@ -145,7 +145,7 @@ export function formatDate(date, format = 'full') {
  * @returns {Date} New date
  */
 export function addDays(date, days) {
-  const d = typeof date === 'string' ? parseISODate(date) : new Date(date);
+  const d = typeof date === 'string' ? parseISODate(date) : new Date(date.getTime ? date.getTime() : date);
   d.setDate(d.getDate() + days);
   return d;
 }

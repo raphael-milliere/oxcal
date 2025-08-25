@@ -11,8 +11,15 @@ import { getAvailableYears, getCurrentAcademicYear } from '../data/termService.j
  * @returns {Array<Object>} Array of suggestion objects
  */
 export function generateSuggestions(input, options = {}) {
-  if (!input || input.length < 2) {
-    return getDefaultSuggestions();
+  if (!input) {
+    const defaults = getDefaultSuggestions();
+    return defaults.slice(0, options.maxSuggestions || 8);
+  }
+  
+  // Special case for single 'w' - it's meaningful for week suggestions
+  if (input.length < 2 && input.toLowerCase() !== 'w') {
+    const defaults = getDefaultSuggestions();
+    return defaults.slice(0, options.maxSuggestions || 8);
   }
   
   const normalized = input.toLowerCase().trim();
