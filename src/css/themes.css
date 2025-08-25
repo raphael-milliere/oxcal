@@ -1,0 +1,179 @@
+/* Theme styles for dark mode and color schemes */
+
+/* Dark mode variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #1a1a1a;
+    --color-surface: #2d2d2d;
+    --color-border: #404040;
+    --color-text: #e0e0e0;
+    --color-text-muted: #a0a0a0;
+    
+    /* Adjust primary colors for dark mode */
+    --color-primary: #4a7ba7;
+    --color-primary-light: #6fa3d2;
+    --color-primary-dark: #2e5f8a;
+    
+    /* Adjust term colors for better contrast in dark mode */
+    --color-michaelmas: #cd853f;
+    --color-hilary: #6495ed;
+    --color-trinity: #3cb371;
+    
+    /* Shadows for dark mode */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Dark mode specific adjustments */
+  .app-header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .calendar-day-header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .calendar-day.today {
+    background-color: #3d3d00;
+  }
+  
+  .calendar-day.selected {
+    background-color: #003d4d;
+  }
+  
+  .search-button {
+    background-color: var(--color-primary);
+  }
+  
+  .search-button:hover {
+    background-color: var(--color-primary-light);
+  }
+  
+  .loading-overlay {
+    background-color: rgba(26, 26, 26, 0.9);
+  }
+  
+  .loading-spinner {
+    border-color: var(--color-border);
+    border-top-color: var(--color-primary);
+  }
+  
+  /* Result styles for dark mode */
+  .result-success {
+    background-color: #1e4e2a;
+    color: #a3d5b1;
+    border-left-color: #52c41a;
+  }
+  
+  .result-info {
+    background-color: #1e3a4e;
+    color: #a3c5d5;
+    border-left-color: #40a9ff;
+  }
+  
+  .result-warning {
+    background-color: #4e3e1e;
+    color: #d5c5a3;
+    border-left-color: #faad14;
+  }
+  
+  .result-error {
+    background-color: #4e1e1e;
+    color: #d5a3a3;
+    border-left-color: #ff4d4f;
+  }
+}
+
+/* Manual dark mode class (for future toggle feature) */
+body.dark-mode {
+  --color-background: #1a1a1a;
+  --color-surface: #2d2d2d;
+  --color-border: #404040;
+  --color-text: #e0e0e0;
+  --color-text-muted: #a0a0a0;
+  --color-primary: #4a7ba7;
+  --color-primary-light: #6fa3d2;
+  --color-primary-dark: #2e5f8a;
+  --color-michaelmas: #cd853f;
+  --color-hilary: #6495ed;
+  --color-trinity: #3cb371;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: #000000;
+    --color-text: #000000;
+    --color-text-muted: #404040;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-border: #ffffff;
+      --color-text: #ffffff;
+      --color-text-muted: #c0c0c0;
+    }
+  }
+  
+  .calendar-day {
+    border: 1px solid var(--color-border);
+  }
+  
+  .term-week-badge {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .loading-spinner {
+    animation: none;
+    border: 4px solid var(--color-primary);
+  }
+}
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Remove focus for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Print mode overrides */
+@media print {
+  :root {
+    --color-background: white;
+    --color-surface: white;
+    --color-border: #000000;
+    --color-text: #000000;
+    --color-text-muted: #666666;
+    --color-primary: #000000;
+  }
+  
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  .calendar-day {
+    border: 1px solid var(--color-border);
+  }
+}
