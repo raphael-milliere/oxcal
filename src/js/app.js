@@ -6,6 +6,7 @@ import { loadTermsData, getCurrentAcademicYear, findTermWeekForDate } from './da
 import { getToday, formatDate } from './data/dateUtils.js';
 import { Calendar } from './components/calendar.js';
 import { search, generateSuggestions, getSuggestionHTML } from './search/index.js';
+import './pwa.js';
 
 // Application state
 let appState = {
