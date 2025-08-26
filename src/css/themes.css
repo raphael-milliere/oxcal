@@ -109,6 +109,18 @@
   color: var(--color-background);
 }
 
+/* GitHub Button Dark Theme */
+[data-theme="dark"] .github-button {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .github-button:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-background);
+}
+
 /* Modal Dark Theme */
 [data-theme="dark"] .modal-overlay {
   background-color: rgba(0, 17, 34, 0.95); /* Dark blue overlay */

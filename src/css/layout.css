@@ -139,6 +139,32 @@
   height: 20px;
 }
 
+/* GitHub Button - Minimal square button matching other header buttons */
+.github-button {
+  background: transparent;
+  border: var(--border-width) solid white;
+  padding: var(--spacing-sm);
+  color: white;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-decoration: none;
+}
+
+.github-button:hover {
+  background: white;
+  color: var(--color-primary);
+}
+
+.github-button:focus {
+  outline: var(--border-width-thick) solid white;
+  outline-offset: 2px;
+}
+
 /* Main Content - Minimal padding */
 .app-main {
   flex: 1;
