@@ -4,7 +4,7 @@
 
 import { parseQuery } from './queryParser.js';
 import { getWeekData, findTermWeekForDate } from '../data/termService.js';
-import { parseISODate, addDays, formatDate, toISODateString } from '../data/dateUtils.js';
+import { parseISODate, addDays, formatDate, toISODateString, formatWeekRange } from '../data/dateUtils.js';
 
 /**
  * Execute a search query and return results
@@ -81,7 +81,8 @@ function searchTermWeek(parsed) {
       endDate: weekData.end,
       dates: dates,
       displayText: `${capitalizeFirst(term)} Term ${year}, Week ${week}`,
-      detailText: `${formatDate(startDate, 'full')} - ${formatDate(endDate, 'full')}`
+      detailText: `${formatDate(startDate, 'full')} - ${formatDate(endDate, 'full')}`,
+      weekRangeText: formatWeekRange(startDate, endDate)
     };
   } catch (error) {
     return {

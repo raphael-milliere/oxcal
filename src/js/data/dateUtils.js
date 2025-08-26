@@ -200,3 +200,37 @@ export function getToday() {
   today.setHours(0, 0, 0, 0);
   return today;
 }
+
+/**
+ * Format a week range from Sunday-Saturday to Monday-Saturday display
+ * @param {Date|string} sundayStart - Sunday start date of the week
+ * @param {Date|string} saturdayEnd - Saturday end date of the week
+ * @returns {string} Formatted range like "Monday, 10 November – Saturday, 15 November 2025"
+ */
+export function formatWeekRange(sundayStart, saturdayEnd) {
+  const startDate = typeof sundayStart === 'string' ? parseISODate(sundayStart) : new Date(sundayStart);
+  const endDate = typeof saturdayEnd === 'string' ? parseISODate(saturdayEnd) : new Date(saturdayEnd);
+  
+  // Adjust Sunday to Monday (add 1 day)
+  const mondayStart = new Date(startDate);
+  mondayStart.setDate(mondayStart.getDate() + 1);
+  
+  // Format components
+  const startDay = getDayName(mondayStart);
+  const startDateNum = mondayStart.getDate();
+  const startMonth = getMonthName(mondayStart);
+  
+  const endDay = getDayName(endDate);
+  const endDateNum = endDate.getDate();
+  const endMonth = getMonthName(endDate);
+  const endYear = endDate.getFullYear();
+  
+  // Check if same month
+  if (mondayStart.getMonth() === endDate.getMonth() && mondayStart.getFullYear() === endDate.getFullYear()) {
+    // Same month: "Monday, 10 November – Saturday, 15 November 2025"
+    return `${startDay}, ${startDateNum} ${startMonth} – ${endDay}, ${endDateNum} ${endMonth} ${endYear}`;
+  } else {
+    // Different months: "Monday, 28 October – Saturday, 3 November 2025"
+    return `${startDay}, ${startDateNum} ${startMonth} – ${endDay}, ${endDateNum} ${endMonth} ${endYear}`;
+  }
+}

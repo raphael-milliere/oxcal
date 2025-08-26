@@ -495,12 +495,11 @@ function updateInfoPanel(mode, data = null) {
       
       if (results.success) {
         if (results.type === 'week-range') {
-          const termWeek = results.data;
-          const termName = termWeek.term.charAt(0).toUpperCase() + termWeek.term.slice(1);
+          const termName = results.term.charAt(0).toUpperCase() + results.term.slice(1);
           html = `
             <div class="info-content">
-              <div class="info-line primary">${results.detailText}</div>
-              <div class="info-line secondary">${termName} Term, Week ${termWeek.week}</div>
+              <div class="info-line primary">${results.weekRangeText}</div>
+              <div class="info-line secondary">${termName} Term, Week ${results.week}</div>
             </div>
           `;
         } else if (results.type === 'single-date') {
