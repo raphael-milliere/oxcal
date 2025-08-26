@@ -224,28 +224,25 @@
   font-weight: 700;
 }
 
-/* Term Info Display - Data table style */
-.term-info-item {
+/* Info Display - Data table style */
+.info-item {
   display: flex;
-  justify-content: space-between;
-  padding: var(--spacing-xs) 0;
-  border-bottom: var(--border-width) solid var(--color-border);
-  font-size: var(--font-size-sm);
+  gap: var(--spacing-sm);
+  align-items: baseline;
+  white-space: nowrap;
 }
 
-.term-info-item:last-child {
-  border-bottom: none;
-}
-
-.term-info-label {
+.info-label {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  color: var(--color-text-muted);
 }
 
-.term-info-value {
+.info-value {
   font-weight: 400;
   font-family: var(--font-family-mono);
+  color: var(--color-text);
 }
 
 /* Buttons - Brutalist flat style */

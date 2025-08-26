@@ -156,20 +156,6 @@
   display: none; /* Remove help text - use placeholder instead */
 }
 
-.search-result {
-  margin-top: var(--spacing-md);
-  padding: var(--spacing-md);
-  background-color: var(--color-background);
-  border: var(--border-width) solid var(--color-border);
-  min-height: 40px;
-  display: none;
-  font-family: var(--font-family-mono);
-}
-
-.search-result.active {
-  display: block;
-}
-
 /* Calendar Section - Dense grid layout */
 .calendar-section {
   border: var(--border-width) solid var(--color-border);
@@ -212,34 +198,31 @@
   color: white;
 }
 
-/* Info Section - Side by side panels */
-.info-section {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-md);
+/* Info Panel - Unified information display */
+.info-panel-section {
+  margin-top: var(--spacing-md);
 }
 
-.info-container {
+.info-panel {
   border: var(--border-width) solid var(--color-border);
   padding: var(--spacing-md);
   background: var(--color-surface);
+  min-height: 80px;
+  display: flex;
+  align-items: center;
 }
 
-.info-container h3 {
-  margin-bottom: var(--spacing-sm);
-  font-size: var(--font-size-base);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-bottom: var(--spacing-sm);
-  border-bottom: var(--border-width) solid var(--color-border);
-}
-
-.term-info {
-  padding: var(--spacing-sm);
-  background-color: var(--color-background);
-  border: var(--border-width) solid var(--color-border);
+.info-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  width: 100%;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-sm);
+}
+
+.info-content.error {
+  color: var(--color-accent);
 }
 
 .term-legend {
@@ -343,8 +326,8 @@
     display: inline;
   }
   
-  .info-section {
-    grid-template-columns: 1fr 1fr;
+  .info-panel {
+    padding: var(--spacing-lg);
   }
   
   .search-input-group {
@@ -363,7 +346,7 @@
   
   .search-section,
   .calendar-section,
-  .info-container {
+  .info-panel {
     padding: var(--spacing-lg);
   }
 }
@@ -384,9 +367,8 @@
     grid-column: 1;
   }
   
-  .info-section {
+  .info-panel-section {
     grid-column: 2;
-    grid-template-columns: 1fr;
   }
 }
 

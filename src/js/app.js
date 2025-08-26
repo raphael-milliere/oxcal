@@ -18,7 +18,8 @@ let appState = {
   calendar: null,
   searchResults: null,
   suggestions: [],
-  selectedSuggestionIndex: -1
+  selectedSuggestionIndex: -1,
+  infoPanelMode: 'today' // 'today', 'selected', 'search'
 };
 
 /**
@@ -41,7 +42,7 @@ async function init() {
     // Initialize UI components
     initializeCalendar();
     initializeEventListeners();
-    updateCurrentTermInfo();
+    updateInfoPanel('today');
     
     showLoading(false);
   } catch (error) {
@@ -64,7 +65,7 @@ function initializeCalendar() {
   // Set up event listeners
   appState.calendar.on('select', ({ date }) => {
     appState.selectedDate = date;
-    updateSelectedDateInfo(date);
+    updateInfoPanel('selected', date);
   });
   
   appState.calendar.on('navigate', ({ month }) => {
@@ -165,14 +166,19 @@ function initializeEventListeners() {
  */
 function handleSearch() {
   const input = document.getElementById('date-search');
-  const resultDiv = document.getElementById('search-result');
   
-  if (!input || !resultDiv) return;
+  if (!input) return;
   
   const query = input.value.trim();
   if (!query) {
-    resultDiv.classList.remove('active');
+    // Clear search and return to showing today's info or selected date
     hideSuggestions();
+    appState.searchResults = null;
+    if (appState.selectedDate) {
+      updateInfoPanel('selected');
+    } else {
+      updateInfoPanel('today');
+    }
     return;
   }
   
@@ -192,16 +198,8 @@ function handleSearch() {
       }
     }
   } else {
-    // Show error
-    resultDiv.innerHTML = `
-      <div class="result-info error">
-        <div class="result-title">No Results Found</div>
-        <div class="result-details">
-          ${results.error || 'Could not parse your query. Try "Week 5 Michaelmas 2025" or "25 March 2025".'}
-        </div>
-      </div>
-    `;
-    resultDiv.classList.add('active');
+    // Show error in info panel
+    updateInfoPanel('search', results);
   }
   
   hideSuggestions();
@@ -211,33 +209,7 @@ function handleSearch() {
  * Display search results
  */
 function displaySearchResults(results) {
-  const resultDiv = document.getElementById('search-result');
-  if (!resultDiv) return;
-  
-  let html = '';
-  
-  if (results.type === 'week-range') {
-    html = `
-      <div class="result-info">
-        <div class="result-title">${results.displayText}</div>
-        <div class="result-details">
-          ${results.detailText}
-        </div>
-      </div>
-    `;
-  } else if (results.type === 'single-date') {
-    html = `
-      <div class="result-info">
-        <div class="result-title">${results.displayText}</div>
-        <div class="result-details">
-          ${results.detailText}
-        </div>
-      </div>
-    `;
-  }
-  
-  resultDiv.innerHTML = html;
-  resultDiv.classList.add('active');
+  updateInfoPanel('search', results);
 }
 
 /**
@@ -461,86 +433,155 @@ function updateMonthHeader() {
 }
 
 /**
- * Update selected date information
+ * Update the unified info panel based on current state
  */
-function updateSelectedDateInfo(date) {
-  const resultDiv = document.getElementById('search-result');
-  if (!resultDiv) return;
+function updateInfoPanel(mode, data = null) {
+  const infoPanel = document.getElementById('info-panel');
+  if (!infoPanel) return;
   
-  const termWeek = findTermWeekForDate(date);
+  appState.infoPanelMode = mode;
+  let html = '';
   
-  if (termWeek) {
-    resultDiv.innerHTML = `
-      <div class="result-info">
-        <div class="result-title">Selected Date</div>
-        <div class="result-details">
-          <strong>${formatDate(date, 'full')}</strong><br>
-          ${termWeek.term.charAt(0).toUpperCase() + termWeek.term.slice(1)} Term, Week ${termWeek.week}<br>
-          Academic Year ${termWeek.year}
-        </div>
-      </div>
-    `;
-  } else {
-    resultDiv.innerHTML = `
-      <div class="result-info">
-        <div class="result-title">Selected Date</div>
-        <div class="result-details">
-          <strong>${formatDate(date, 'full')}</strong><br>
-          Outside term time
-        </div>
-      </div>
-    `;
+  switch (mode) {
+    case 'today':
+      const today = getToday();
+      const todayTermWeek = findTermWeekForDate(today);
+      
+      if (todayTermWeek) {
+        html = `
+          <div class="info-content">
+            <div class="info-item">
+              <span class="info-label">Date:</span>
+              <span class="info-value">${formatDate(today, 'full')}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Academic Year:</span>
+              <span class="info-value">${todayTermWeek.year}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Term:</span>
+              <span class="info-value">${todayTermWeek.term.charAt(0).toUpperCase() + todayTermWeek.term.slice(1)}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Week:</span>
+              <span class="info-value">Week ${todayTermWeek.week}</span>
+            </div>
+          </div>
+        `;
+      } else {
+        const currentYear = getCurrentAcademicYear();
+        html = `
+          <div class="info-content">
+            <div class="info-item">
+              <span class="info-label">Date:</span>
+              <span class="info-value">${formatDate(today, 'full')}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Status:</span>
+              <span class="info-value">Outside term time</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Academic Year:</span>
+              <span class="info-value">${currentYear || 'N/A'}</span>
+            </div>
+          </div>
+        `;
+      }
+      break;
+      
+    case 'selected':
+      const selectedDate = data || appState.selectedDate;
+      if (!selectedDate) return;
+      
+      const selectedTermWeek = findTermWeekForDate(selectedDate);
+      
+      if (selectedTermWeek) {
+        html = `
+          <div class="info-content">
+            <div class="info-item">
+              <span class="info-label">Selected:</span>
+              <span class="info-value">${formatDate(selectedDate, 'full')}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Academic Year:</span>
+              <span class="info-value">${selectedTermWeek.year}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Term:</span>
+              <span class="info-value">${selectedTermWeek.term.charAt(0).toUpperCase() + selectedTermWeek.term.slice(1)}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Week:</span>
+              <span class="info-value">Week ${selectedTermWeek.week}</span>
+            </div>
+          </div>
+        `;
+      } else {
+        html = `
+          <div class="info-content">
+            <div class="info-item">
+              <span class="info-label">Selected:</span>
+              <span class="info-value">${formatDate(selectedDate, 'full')}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Status:</span>
+              <span class="info-value">Outside term time</span>
+            </div>
+          </div>
+        `;
+      }
+      break;
+      
+    case 'search':
+      const results = data || appState.searchResults;
+      if (!results) return;
+      
+      if (results.success) {
+        if (results.type === 'week-range') {
+          html = `
+            <div class="info-content">
+              <div class="info-item">
+                <span class="info-label">Query:</span>
+                <span class="info-value">${results.displayText}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Dates:</span>
+                <span class="info-value">${results.detailText}</span>
+              </div>
+            </div>
+          `;
+        } else if (results.type === 'single-date') {
+          html = `
+            <div class="info-content">
+              <div class="info-item">
+                <span class="info-label">Query:</span>
+                <span class="info-value">${results.displayText}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Result:</span>
+                <span class="info-value">${results.detailText}</span>
+              </div>
+            </div>
+          `;
+        }
+      } else {
+        html = `
+          <div class="info-content error">
+            <div class="info-item">
+              <span class="info-label">Search:</span>
+              <span class="info-value">No results found</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Error:</span>
+              <span class="info-value">${results.error || 'Could not parse query'}</span>
+            </div>
+          </div>
+        `;
+      }
+      break;
   }
   
-  resultDiv.classList.add('active');
-}
-
-/**
- * Update current term information
- */
-function updateCurrentTermInfo() {
-  const infoElement = document.getElementById('current-term-info');
-  if (!infoElement) return;
-  
-  const today = getToday();
-  const termWeek = findTermWeekForDate(today);
-  
-  if (termWeek) {
-    infoElement.innerHTML = `
-      <div class="term-info-item">
-        <span class="term-info-label">Current Date:</span>
-        <span class="term-info-value">${formatDate(today, 'full')}</span>
-      </div>
-      <div class="term-info-item">
-        <span class="term-info-label">Academic Year:</span>
-        <span class="term-info-value">${termWeek.year}</span>
-      </div>
-      <div class="term-info-item">
-        <span class="term-info-label">Term:</span>
-        <span class="term-info-value">${termWeek.term.charAt(0).toUpperCase() + termWeek.term.slice(1)}</span>
-      </div>
-      <div class="term-info-item">
-        <span class="term-info-label">Week:</span>
-        <span class="term-info-value">Week ${termWeek.week}</span>
-      </div>
-    `;
-  } else {
-    const currentYear = getCurrentAcademicYear();
-    infoElement.innerHTML = `
-      <div class="term-info-item">
-        <span class="term-info-label">Current Date:</span>
-        <span class="term-info-value">${formatDate(today, 'full')}</span>
-      </div>
-      <div class="term-info-item">
-        <span class="term-info-label">Status:</span>
-        <span class="term-info-value">Outside term time</span>
-      </div>
-      <div class="term-info-item">
-        <span class="term-info-label">Academic Year:</span>
-        <span class="term-info-value">${currentYear || 'N/A'}</span>
-      </div>
-    `;
-  }
+  infoPanel.innerHTML = html;
 }
 
 /**
