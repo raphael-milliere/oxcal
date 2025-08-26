@@ -43,20 +43,31 @@
           <h1 class="app-title">OxCal</h1>
           <p class="app-subtitle">Oxford University Term Calendar</p>
         </div>
-        <button type="button" 
-                id="theme-toggle" 
-                class="theme-toggle" 
-                aria-label="Toggle dark mode"
-                title="Toggle dark mode">
-          <svg class="theme-icon theme-icon-light" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="currentColor"/>
-            <path d="M12 1V3M12 21V23M23 12H21M3 12H1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M20.5 3.5L19 5M5 19L3.5 20.5M20.5 20.5L19 19M5 5L3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <svg class="theme-icon theme-icon-dark" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"/>
-          </svg>
-        </button>
+        <div class="header-actions">
+          <button type="button"
+                  id="info-button"
+                  class="info-button"
+                  aria-label="Show search shortcuts"
+                  title="Show search shortcuts">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.1,21.3l1.9,0.1v2.7H8v-2.5l1.1-0.1c0.6-0.1,1-0.3,1-1.1V11c0-0.7-0.2-1-0.8-1L8.1,9.9V7.2h6v14.1z M12.7,0c1.5,0,2.5,1.1,2.5,2.5c0,1.4-1.1,2.4-2.6,2.4c-1.5,0-2.5-1-2.5-2.4C10.1,1.1,11.1,0,12.7,0z" transform="scale(0.8) translate(3, 3)"/>
+            </svg>
+          </button>
+          <button type="button" 
+                  id="theme-toggle" 
+                  class="theme-toggle" 
+                  aria-label="Toggle dark mode"
+                  title="Toggle dark mode">
+            <svg class="theme-icon theme-icon-light" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="currentColor"/>
+              <path d="M12 1V3M12 21V23M23 12H21M3 12H1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M20.5 3.5L19 5M5 19L3.5 20.5M20.5 20.5L19 19M5 5L3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <svg class="theme-icon theme-icon-dark" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -118,6 +129,66 @@
   <!-- Loading State -->
   <div id="loading" class="loading-overlay" aria-hidden="true">
     <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Info Modal -->
+  <div id="info-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-content">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2 id="modal-title" class="modal-title">Search Shortcuts</h2>
+        <button type="button" id="modal-close" class="modal-close" aria-label="Close modal">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div id="modal-content" class="modal-content">
+        <section class="shortcut-section">
+          <h3 class="shortcut-heading">Quick Shortcuts</h3>
+          <dl class="shortcut-list">
+            <dt><code>w5</code></dt>
+            <dd>Week 5</dd>
+            <dt><code>MT25</code></dt>
+            <dd>Michaelmas 2025</dd>
+            <dt><code>HT26</code></dt>
+            <dd>Hilary 2026</dd>
+            <dt><code>TT24</code></dt>
+            <dd>Trinity 2024</dd>
+          </dl>
+        </section>
+        
+        <section class="shortcut-section">
+          <h3 class="shortcut-heading">Day Names</h3>
+          <dl class="shortcut-list">
+            <dt><code>mon</code>, <code>tue</code>, <code>wed</code>, <code>thu</code></dt>
+            <dd>Monday, Tuesday, Wednesday, Thursday</dd>
+            <dt><code>fri</code>, <code>sat</code>, <code>sun</code></dt>
+            <dd>Friday, Saturday, Sunday</dd>
+          </dl>
+        </section>
+        
+        <section class="shortcut-section">
+          <h3 class="shortcut-heading">Term Names</h3>
+          <dl class="shortcut-list">
+            <dt><code>MT</code></dt>
+            <dd>Michaelmas Term</dd>
+            <dt><code>HT</code></dt>
+            <dd>Hilary Term</dd>
+            <dt><code>TT</code></dt>
+            <dd>Trinity Term</dd>
+          </dl>
+        </section>
+        
+        <section class="shortcut-section">
+          <h3 class="shortcut-heading">Example Queries</h3>
+          <ul class="example-list">
+            <li>tue w2 MT25</li>
+            <li>w0 HT26</li>
+            <li>fri week 5 trinity 2025</li>
+            <li>25 March 2025</li>
+            <li>2025-03-25</li>
+          </ul>
+        </section>
+      </div>
+    </div>
   </div>
 </body>
 </html>

@@ -31,6 +31,12 @@
   gap: var(--spacing-md);
 }
 
+.header-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
 .header-text {
   display: flex;
   align-items: baseline;
@@ -101,6 +107,36 @@
 [data-theme="dark"] .theme-icon-light {
   opacity: 1;
   visibility: visible;
+}
+
+/* Info Button - Minimal square button matching theme toggle */
+.info-button {
+  background: transparent;
+  border: var(--border-width) solid white;
+  padding: var(--spacing-sm);
+  color: white;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.info-button:hover {
+  background: white;
+  color: var(--color-primary);
+}
+
+.info-button:focus {
+  outline: var(--border-width-thick) solid white;
+  outline-offset: 2px;
+}
+
+.info-button svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Main Content - Minimal padding */

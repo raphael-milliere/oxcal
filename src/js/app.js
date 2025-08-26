@@ -111,6 +111,43 @@ function initializeEventListeners() {
       currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
   }
   
+  // Info modal functionality
+  const infoButton = document.getElementById('info-button');
+  const infoModal = document.getElementById('info-modal');
+  const modalClose = document.getElementById('modal-close');
+  
+  if (infoButton && infoModal) {
+    // Open modal
+    infoButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openModal();
+    });
+    
+    // Close modal via close button
+    if (modalClose) {
+      modalClose.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeModal();
+      });
+    }
+    
+    // Close modal via overlay click
+    infoModal.addEventListener('click', (e) => {
+      if (e.target === infoModal) {
+        closeModal();
+      }
+    });
+    
+    // Close modal via Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && infoModal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  }
+  
   // Search functionality
   const searchButton = document.getElementById('search-button');
   const searchInput = document.getElementById('date-search');
@@ -158,6 +195,48 @@ function initializeEventListeners() {
         appState.calendar.navigateMonth(1);
       }
     });
+  }
+}
+
+/**
+ * Open the info modal
+ */
+function openModal() {
+  const modal = document.getElementById('info-modal');
+  const infoButton = document.getElementById('info-button');
+  
+  if (modal) {
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    
+    // Store reference to triggering element for focus return
+    modal.dataset.triggerElement = 'info-button';
+    
+    // Focus the close button for keyboard navigation
+    const closeButton = document.getElementById('modal-close');
+    if (closeButton) {
+      closeButton.focus();
+    }
+  }
+}
+
+/**
+ * Close the info modal
+ */
+function closeModal() {
+  const modal = document.getElementById('info-modal');
+  
+  if (modal) {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    
+    // Return focus to trigger element
+    if (modal.dataset.triggerElement) {
+      const trigger = document.getElementById(modal.dataset.triggerElement);
+      if (trigger) {
+        trigger.focus();
+      }
+    }
   }
 }
 

@@ -97,6 +97,59 @@
   background-color: var(--color-background);
 }
 
+/* Info Button Dark Theme */
+[data-theme="dark"] .info-button {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .info-button:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+/* Modal Dark Theme */
+[data-theme="dark"] .modal-overlay {
+  background-color: rgba(0, 17, 34, 0.95); /* Dark blue overlay */
+}
+
+[data-theme="dark"] .modal-container {
+  background: var(--color-background);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .modal-header {
+  background: var(--color-surface);
+  border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .modal-close {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .modal-close:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .shortcut-heading {
+  border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .shortcut-list dt code {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .example-list li {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-primary);
+}
+
 [data-theme="dark"] .loading-spinner {
   border-color: var(--color-border);
   color: var(--color-text);
