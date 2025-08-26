@@ -1,17 +1,15 @@
-
-# Documentation files
-json_data_structure.md
+# Project files
 documentation/
+*.md.backup
 
 # Development configs
 netlify.toml
 vercel.json
 
-# Utility files not needed in production
-public/icons/generate-icons.html
-
-# Accidental/temporary files
+# Temporary files
+*.tmp
 nul
+.gitignore.local
 
 # OS files
 .DS_Store
