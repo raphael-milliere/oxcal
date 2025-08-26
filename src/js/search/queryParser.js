@@ -3,6 +3,70 @@
  */
 
 /**
+ * Preprocess query to expand aliases and shortcuts
+ * @param {string} query - User input query
+ * @returns {string} Expanded query
+ */
+function preprocessQuery(query) {
+  if (!query || typeof query !== 'string') {
+    return query;
+  }
+  
+  let processed = query;
+  
+  // Day aliases (case-insensitive)
+  const dayAliases = {
+    'mon\\b': 'Monday',
+    'tue\\b': 'Tuesday', 
+    'wed\\b': 'Wednesday',
+    'thu\\b': 'Thursday',
+    'fri\\b': 'Friday',
+    'sat\\b': 'Saturday',
+    'sun\\b': 'Sunday'
+  };
+  
+  for (const [alias, full] of Object.entries(dayAliases)) {
+    const regex = new RegExp(alias, 'gi');
+    processed = processed.replace(regex, full);
+  }
+  
+  // Week aliases (w0, w1, w2, etc.)
+  processed = processed.replace(/\bw(\d{1,2})\b/gi, (match, num) => {
+    const weekNum = parseInt(num);
+    if (weekNum >= 0 && weekNum <= 12) {
+      return `Week ${weekNum}`;
+    }
+    return match;
+  });
+  
+  // Year-specific term aliases (MT25, HT26, TT24, etc.)
+  processed = processed.replace(/\b(mt|ht|tt)(\d{2})\b/gi, (match, term, year) => {
+    const termMap = {
+      'mt': 'Michaelmas',
+      'ht': 'Hilary',
+      'tt': 'Trinity'
+    };
+    const fullTerm = termMap[term.toLowerCase()];
+    const fullYear = `20${year}`;
+    return `${fullTerm} ${fullYear}`;
+  });
+  
+  // Standalone term aliases (MT, HT, TT)
+  const termAliases = {
+    '\\bmt\\b': 'Michaelmas',
+    '\\bht\\b': 'Hilary',
+    '\\btt\\b': 'Trinity'
+  };
+  
+  for (const [alias, full] of Object.entries(termAliases)) {
+    const regex = new RegExp(alias, 'gi');
+    processed = processed.replace(regex, full);
+  }
+  
+  return processed;
+}
+
+/**
  * Parse a natural language query into a structured search request
  * @param {string} query - User input query
  * @returns {Object} Parsed query object with type and parameters
@@ -12,7 +76,9 @@ export function parseQuery(query) {
     return { type: 'invalid', error: 'Empty or invalid query' };
   }
   
-  const normalizedQuery = query.trim().toLowerCase();
+  // Preprocess the query to expand aliases
+  const expandedQuery = preprocessQuery(query);
+  const normalizedQuery = expandedQuery.trim().toLowerCase();
   
   // Try to parse as day of week in term week first (more specific)
   const dayWeekResult = parseDayWeekQuery(normalizedQuery);

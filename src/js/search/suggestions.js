@@ -93,6 +93,47 @@ function getTermSuggestions(input, options = {}) {
   
   const currentYear = getCurrentAcademicYear();
   
+  // Check for year-specific term aliases (e.g., MT25, HT26)
+  const yearTermMatch = input.match(/^(mt|ht|tt)(\d{2})?$/i);
+  if (yearTermMatch) {
+    const [, termAlias, yearPart] = yearTermMatch;
+    const termMap = {
+      'mt': 'Michaelmas',
+      'ht': 'Hilary',
+      'tt': 'Trinity'
+    };
+    const fullTerm = termMap[termAlias.toLowerCase()];
+    
+    if (yearPart) {
+      // Specific year provided
+      const fullYear = `20${yearPart}`;
+      const academicYear = getAcademicYearFromCalendarYear(fullTerm, fullYear);
+      suggestions.push({
+        text: `${fullTerm} ${academicYear}`,
+        type: 'term',
+        description: `${fullTerm} term of ${academicYear}`
+      });
+      suggestions.push({
+        text: `Week 1 ${fullTerm} ${academicYear}`,
+        type: 'term-week',
+        description: `First week of ${fullTerm} term`
+      });
+    } else {
+      // Just term alias without year
+      suggestions.push({
+        text: `${fullTerm} ${currentYear}`,
+        type: 'term',
+        description: `${fullTerm} term of ${currentYear}`
+      });
+      suggestions.push({
+        text: `Week 1 ${fullTerm} ${currentYear}`,
+        type: 'term-week',
+        description: `First week of ${fullTerm} term`
+      });
+    }
+    return suggestions;
+  }
+  
   for (const term of terms) {
     const termLower = term.name.toLowerCase();
     
@@ -136,6 +177,34 @@ function getTermSuggestions(input, options = {}) {
  */
 function getWeekSuggestions(input, options = {}) {
   const suggestions = [];
+  
+  // Check for week aliases (w0, w1, w2, etc.)
+  const weekAliasMatch = input.match(/^w(\d{1,2})$/i);
+  if (weekAliasMatch) {
+    const weekNum = parseInt(weekAliasMatch[1]);
+    if (weekNum >= 0 && weekNum <= 12) {
+      const currentYear = getCurrentAcademicYear();
+      
+      suggestions.push({
+        text: `Week ${weekNum} Michaelmas ${currentYear}`,
+        type: 'week',
+        description: `Week ${weekNum} of Michaelmas term`
+      });
+      
+      suggestions.push({
+        text: `Week ${weekNum} Hilary ${currentYear}`,
+        type: 'week',
+        description: `Week ${weekNum} of Hilary term`
+      });
+      
+      suggestions.push({
+        text: `Week ${weekNum} Trinity ${currentYear}`,
+        type: 'week',
+        description: `Week ${weekNum} of Trinity term`
+      });
+    }
+    return suggestions;
+  }
   
   if (input.startsWith('w') || input.startsWith('week')) {
     const currentYear = getCurrentAcademicYear();
@@ -190,25 +259,34 @@ function getWeekSuggestions(input, options = {}) {
 function getDaySuggestions(input, options = {}) {
   const suggestions = [];
   const days = [
-    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 
-    'Friday', 'Saturday', 'Sunday'
+    { full: 'Monday', abbrev: ['mon'] },
+    { full: 'Tuesday', abbrev: ['tue'] },
+    { full: 'Wednesday', abbrev: ['wed'] },
+    { full: 'Thursday', abbrev: ['thu'] },
+    { full: 'Friday', abbrev: ['fri'] },
+    { full: 'Saturday', abbrev: ['sat'] },
+    { full: 'Sunday', abbrev: ['sun'] }
   ];
   
   const currentYear = getCurrentAcademicYear();
   
   for (const day of days) {
-    if (day.toLowerCase().startsWith(input)) {
+    // Check both full name and abbreviations
+    const matchesFull = day.full.toLowerCase().startsWith(input);
+    const matchesAbbrev = day.abbrev.some(a => a.startsWith(input));
+    
+    if (matchesFull || matchesAbbrev) {
       suggestions.push({
-        text: `${day} Week 1`,
+        text: `${day.full} Week 1`,
         type: 'day-partial',
-        description: `${day} of Week 1`
+        description: `${day.full} of Week 1`
       });
       
       if (input.length > 2) {
         suggestions.push({
-          text: `${day} Week 5 Michaelmas ${currentYear}`,
+          text: `${day.full} Week 5 Michaelmas ${currentYear}`,
           type: 'day-week',
-          description: `${day} of Week 5, Michaelmas term`
+          description: `${day.full} of Week 5, Michaelmas term`
         });
       }
     }
@@ -300,6 +378,23 @@ function getNextAcademicYear(currentYear) {
   const nextStart = parseInt(startYear) + 1;
   const nextEnd = (nextStart + 1).toString().slice(-2);
   return `${nextStart}-${nextEnd}`;
+}
+
+/**
+ * Get academic year from calendar year and term
+ * @param {string} term - Term name (Michaelmas, Hilary, Trinity)
+ * @param {string} calendarYear - Calendar year (e.g., "2025")
+ * @returns {string} Academic year (e.g., "2024-25")
+ */
+function getAcademicYearFromCalendarYear(term, calendarYear) {
+  const year = parseInt(calendarYear);
+  if (term.toLowerCase() === 'michaelmas') {
+    // Michaelmas starts the academic year
+    return `${year}-${(year + 1).toString().slice(-2)}`;
+  } else {
+    // Hilary and Trinity are in the second part of academic year
+    return `${year - 1}-${year.toString().slice(-2)}`;
+  }
 }
 
 /**
