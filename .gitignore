@@ -1,6 +1,17 @@
+
 # Documentation files
 json_data_structure.md
 documentation/
+
+# Development configs
+netlify.toml
+vercel.json
+
+# Utility files not needed in production
+public/icons/generate-icons.html
+
+# Accidental/temporary files
+nul
 
 # OS files
 .DS_Store
