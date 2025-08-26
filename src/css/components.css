@@ -74,8 +74,40 @@
   z-index: 1;
 }
 
-.calendar-day.highlighted {
-  background-color: var(--color-accent) !important;
+/* Term-specific highlighting for search results */
+.calendar-day.highlighted.term-michaelmas:not(.extended-week) {
+  background-color: var(--color-michaelmas) !important;
+  color: white;
+}
+
+.calendar-day.highlighted.term-michaelmas.extended-week {
+  background-color: var(--color-michaelmas-faded) !important;
+  color: white;
+}
+
+.calendar-day.highlighted.term-hilary:not(.extended-week) {
+  background-color: var(--color-hilary) !important;
+  color: white;
+}
+
+.calendar-day.highlighted.term-hilary.extended-week {
+  background-color: var(--color-hilary-faded) !important;
+  color: white;
+}
+
+.calendar-day.highlighted.term-trinity:not(.extended-week) {
+  background-color: var(--color-trinity) !important;
+  color: white;
+}
+
+.calendar-day.highlighted.term-trinity.extended-week {
+  background-color: var(--color-trinity-faded) !important;
+  color: white;
+}
+
+/* Highlighting for dates outside term time */
+.calendar-day.highlighted:not(.term-michaelmas):not(.term-hilary):not(.term-trinity) {
+  background-color: var(--color-primary) !important;
   color: white;
 }
 

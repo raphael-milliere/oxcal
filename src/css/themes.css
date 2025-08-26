@@ -129,6 +129,42 @@
   color: var(--color-text);
 }
 
+/* Dark theme term-specific highlighting */
+[data-theme="dark"] .calendar-day.highlighted.term-michaelmas:not(.extended-week) {
+  background-color: var(--color-michaelmas) !important;
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .calendar-day.highlighted.term-michaelmas.extended-week {
+  background-color: var(--color-michaelmas-faded) !important;
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .calendar-day.highlighted.term-hilary:not(.extended-week) {
+  background-color: var(--color-hilary) !important;
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .calendar-day.highlighted.term-hilary.extended-week {
+  background-color: var(--color-hilary-faded) !important;
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .calendar-day.highlighted.term-trinity:not(.extended-week) {
+  background-color: var(--color-trinity) !important;
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .calendar-day.highlighted.term-trinity.extended-week {
+  background-color: var(--color-trinity-faded) !important;
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .calendar-day.highlighted:not(.term-michaelmas):not(.term-hilary):not(.term-trinity) {
+  background-color: var(--color-primary) !important;
+  color: var(--color-background);
+}
+
 /* Focus styles for dark theme */
 [data-theme="dark"] a:focus,
 [data-theme="dark"] button:focus,
