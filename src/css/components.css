@@ -224,26 +224,8 @@
   font-weight: 700;
 }
 
-/* Info Display - Data table style */
-.info-item {
-  display: flex;
-  gap: var(--spacing-sm);
-  align-items: baseline;
-  white-space: nowrap;
-}
-
-.info-label {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-muted);
-}
-
-.info-value {
-  font-weight: 400;
-  font-family: var(--font-family-mono);
-  color: var(--color-text);
-}
+/* Info Display - Clean two-line style */
+/* Styles moved to layout.css for .info-line */
 
 /* Buttons - Brutalist flat style */
 .btn {

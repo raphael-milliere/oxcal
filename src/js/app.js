@@ -448,42 +448,18 @@ function updateInfoPanel(mode, data = null) {
       const todayTermWeek = findTermWeekForDate(today);
       
       if (todayTermWeek) {
+        const termName = todayTermWeek.term.charAt(0).toUpperCase() + todayTermWeek.term.slice(1);
         html = `
           <div class="info-content">
-            <div class="info-item">
-              <span class="info-label">Date:</span>
-              <span class="info-value">${formatDate(today, 'full')}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Academic Year:</span>
-              <span class="info-value">${todayTermWeek.year}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Term:</span>
-              <span class="info-value">${todayTermWeek.term.charAt(0).toUpperCase() + todayTermWeek.term.slice(1)}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Week:</span>
-              <span class="info-value">Week ${todayTermWeek.week}</span>
-            </div>
+            <div class="info-line primary">${formatDate(today, 'full')}</div>
+            <div class="info-line secondary">${termName} Term, Week ${todayTermWeek.week}</div>
           </div>
         `;
       } else {
-        const currentYear = getCurrentAcademicYear();
         html = `
           <div class="info-content">
-            <div class="info-item">
-              <span class="info-label">Date:</span>
-              <span class="info-value">${formatDate(today, 'full')}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Status:</span>
-              <span class="info-value">Outside term time</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Academic Year:</span>
-              <span class="info-value">${currentYear || 'N/A'}</span>
-            </div>
+            <div class="info-line primary">${formatDate(today, 'full')}</div>
+            <div class="info-line secondary">Outside term time</div>
           </div>
         `;
       }
@@ -496,37 +472,18 @@ function updateInfoPanel(mode, data = null) {
       const selectedTermWeek = findTermWeekForDate(selectedDate);
       
       if (selectedTermWeek) {
+        const termName = selectedTermWeek.term.charAt(0).toUpperCase() + selectedTermWeek.term.slice(1);
         html = `
           <div class="info-content">
-            <div class="info-item">
-              <span class="info-label">Selected:</span>
-              <span class="info-value">${formatDate(selectedDate, 'full')}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Academic Year:</span>
-              <span class="info-value">${selectedTermWeek.year}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Term:</span>
-              <span class="info-value">${selectedTermWeek.term.charAt(0).toUpperCase() + selectedTermWeek.term.slice(1)}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Week:</span>
-              <span class="info-value">Week ${selectedTermWeek.week}</span>
-            </div>
+            <div class="info-line primary">${formatDate(selectedDate, 'full')}</div>
+            <div class="info-line secondary">${termName} Term, Week ${selectedTermWeek.week}</div>
           </div>
         `;
       } else {
         html = `
           <div class="info-content">
-            <div class="info-item">
-              <span class="info-label">Selected:</span>
-              <span class="info-value">${formatDate(selectedDate, 'full')}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Status:</span>
-              <span class="info-value">Outside term time</span>
-            </div>
+            <div class="info-line primary">${formatDate(selectedDate, 'full')}</div>
+            <div class="info-line secondary">Outside term time</div>
           </div>
         `;
       }
@@ -538,43 +495,58 @@ function updateInfoPanel(mode, data = null) {
       
       if (results.success) {
         if (results.type === 'week-range') {
+          const termWeek = results.data;
+          const termName = termWeek.term.charAt(0).toUpperCase() + termWeek.term.slice(1);
           html = `
             <div class="info-content">
-              <div class="info-item">
-                <span class="info-label">Query:</span>
-                <span class="info-value">${results.displayText}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Dates:</span>
-                <span class="info-value">${results.detailText}</span>
-              </div>
+              <div class="info-line primary">${results.detailText}</div>
+              <div class="info-line secondary">${termName} Term, Week ${termWeek.week}</div>
             </div>
           `;
         } else if (results.type === 'single-date') {
-          html = `
-            <div class="info-content">
-              <div class="info-item">
-                <span class="info-label">Query:</span>
-                <span class="info-value">${results.displayText}</span>
+          // For specific date queries like "Tuesday Week 5 Michaelmas 2025"
+          if (results.term && results.week) {
+            const termName = results.term.charAt(0).toUpperCase() + results.term.slice(1);
+            html = `
+              <div class="info-content">
+                <div class="info-line primary">${results.displayText}</div>
+                <div class="info-line secondary">${termName} Term, Week ${results.week}</div>
               </div>
-              <div class="info-item">
-                <span class="info-label">Result:</span>
-                <span class="info-value">${results.detailText}</span>
+            `;
+          } else if (results.detailText === 'Outside term time') {
+            html = `
+              <div class="info-content">
+                <div class="info-line primary">${results.displayText}</div>
+                <div class="info-line secondary">Outside term time</div>
               </div>
-            </div>
-          `;
+            `;
+          } else {
+            // Extract term and week from detailText like "Tuesday, Week 5 of Michaelmas Term 2025-26"
+            const detailMatch = results.detailText.match(/Week (\d+) of (\w+) Term/);
+            if (detailMatch) {
+              const weekNum = detailMatch[1];
+              const termName = detailMatch[2];
+              html = `
+                <div class="info-content">
+                  <div class="info-line primary">${results.displayText}</div>
+                  <div class="info-line secondary">${termName} Term, Week ${weekNum}</div>
+                </div>
+              `;
+            } else {
+              html = `
+                <div class="info-content">
+                  <div class="info-line primary">${results.displayText}</div>
+                  <div class="info-line secondary">${results.detailText}</div>
+                </div>
+              `;
+            }
+          }
         }
       } else {
         html = `
           <div class="info-content error">
-            <div class="info-item">
-              <span class="info-label">Search:</span>
-              <span class="info-value">No results found</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Error:</span>
-              <span class="info-value">${results.error || 'Could not parse query'}</span>
-            </div>
+            <div class="info-line primary">No results found</div>
+            <div class="info-line secondary">${results.error || 'Could not parse query'}</div>
           </div>
         `;
       }

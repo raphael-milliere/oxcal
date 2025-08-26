@@ -214,11 +214,28 @@
 
 .info-content {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-lg);
+  flex-direction: column;
+  gap: var(--spacing-md);
   width: 100%;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+}
+
+.info-line {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.info-line.primary {
+  font-size: var(--font-size-lg);
+}
+
+.info-line.secondary {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .info-content.error {
@@ -305,6 +322,21 @@
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.05em;
+}
+
+/* Mobile responsive adjustments for info panel */
+@media (max-width: 640px) {
+  .info-content {
+    gap: var(--spacing-sm);
+  }
+  
+  .info-line.primary {
+    font-size: var(--font-size-base);
+  }
+  
+  .info-line.secondary {
+    font-size: var(--font-size-sm);
+  }
 }
 
 /* Responsive Design - Even tighter on mobile */
