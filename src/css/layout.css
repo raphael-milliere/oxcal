@@ -1,9 +1,15 @@
 /* Brutalist layout - Full viewport, minimal spacing, stark divisions */
 
-/* Container - Full width, no limitations */
+/* Container - Full width for header, constrained for main content */
 .container {
   width: 100%;
   padding: 0 var(--spacing-md);
+}
+
+/* Main content container - centered with max-width */
+.app-main .container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* App Header - Compact functional bar */
@@ -345,6 +351,10 @@
     padding: 0 var(--spacing-lg);
   }
   
+  .app-main .container {
+    max-width: 768px;
+  }
+  
   .app-header {
     height: 56px;
     padding: var(--spacing-md) var(--spacing-lg);
@@ -372,6 +382,10 @@
     padding: 0 var(--spacing-xl);
   }
   
+  .app-main .container {
+    max-width: 1024px;
+  }
+  
   .app-main {
     padding: var(--spacing-lg);
   }
@@ -385,7 +399,8 @@
 
 /* Ultra-wide displays - Use maximum width efficiently */
 @media (min-width: 1440px) {
-  .app-main {
+  .app-main .container {
+    max-width: 1400px;
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: var(--spacing-lg);
@@ -401,6 +416,7 @@
   
   .info-panel-section {
     grid-column: 2;
+    margin-top: 0;
   }
 }
 
