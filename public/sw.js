@@ -1,9 +1,25 @@
 // Service Worker for OxCal PWA
-const CACHE_NAME = 'oxcal-v1.0.0';
+const CACHE_NAME = 'oxcal-v1.0.1';
 const RUNTIME_CACHE = 'oxcal-runtime';
 
+// Detect if running in production (bundled assets) or development
+const isProduction = self.location.hostname !== 'localhost' && 
+                     self.location.hostname !== '127.0.0.1';
+
 // Files to cache for offline functionality
-const STATIC_CACHE_URLS = [
+// Different file paths for dev vs production
+const STATIC_CACHE_URLS = isProduction ? [
+  // Production files (after build)
+  '/',
+  '/index.html',
+  '/terms.json',
+  '/manifest.json',
+  // Icons that should exist
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+  // Note: Bundled JS/CSS files have hashes in names, so we'll cache them dynamically
+] : [
+  // Development files
   '/',
   '/index.html',
   '/src/css/base.css',
@@ -19,8 +35,11 @@ const STATIC_CACHE_URLS = [
   '/src/js/search/searchEngine.js',
   '/src/js/search/queryParser.js',
   '/src/js/search/suggestions.js',
+  '/src/js/themeManager.js',
+  '/src/js/pwa.js',
   '/public/terms.json',
-  '/public/manifest.json'
+  '/public/manifest.json',
+  '/public/icons/icon-192x192.png'
 ];
 
 // Install event - cache all static resources
@@ -31,7 +50,15 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('[Service Worker] Caching static resources');
-        return cache.addAll(STATIC_CACHE_URLS);
+        // Try to cache each URL individually to avoid complete failure
+        return Promise.allSettled(
+          STATIC_CACHE_URLS.map(url => 
+            cache.add(url).catch(err => {
+              console.warn(`[Service Worker] Failed to cache ${url}:`, err);
+              return null;
+            })
+          )
+        );
       })
       .then(() => {
         console.log('[Service Worker] Installation complete');
@@ -40,6 +67,8 @@ self.addEventListener('install', event => {
       })
       .catch(error => {
         console.error('[Service Worker] Installation failed:', error);
+        // Still skip waiting even if some caching failed
+        return self.skipWaiting();
       })
   );
 });
@@ -81,8 +110,8 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // Skip cross-origin requests
-  if (url.origin !== location.origin) {
+  // Skip cross-origin requests (except for CDN resources like jszip)
+  if (url.origin !== location.origin && !url.hostname.includes('cdnjs.cloudflare.com')) {
     return;
   }
   
@@ -105,14 +134,33 @@ self.addEventListener('fetch', event => {
               return response;
             }
             
-            // Clone the response because it can only be used once
-            const responseToCache = response.clone();
+            // Determine if this resource should be cached
+            const shouldCache = 
+              // Cache production assets (JS, CSS with hash in filename)
+              url.pathname.includes('/assets/') ||
+              // Cache images and icons
+              url.pathname.includes('/icons/') ||
+              url.pathname.endsWith('.png') ||
+              url.pathname.endsWith('.svg') ||
+              // Cache data files
+              url.pathname.endsWith('.json') ||
+              // Cache HTML pages
+              url.pathname.endsWith('.html') ||
+              url.pathname === '/';
             
-            // Cache the fetched response for future use
-            caches.open(RUNTIME_CACHE)
-              .then(cache => {
-                cache.put(request, responseToCache);
-              });
+            if (shouldCache) {
+              // Clone the response because it can only be used once
+              const responseToCache = response.clone();
+              
+              // Cache the fetched response for future use
+              caches.open(RUNTIME_CACHE)
+                .then(cache => {
+                  cache.put(request, responseToCache);
+                })
+                .catch(err => {
+                  console.warn('[Service Worker] Failed to cache response:', err);
+                });
+            }
             
             return response;
           })
@@ -121,6 +169,11 @@ self.addEventListener('fetch', event => {
             // Return offline page if available
             if (request.destination === 'document') {
               return caches.match('/index.html');
+            }
+            // For other resources, try to find any cached version
+            if (url.pathname.includes('/assets/')) {
+              // For assets, try to match any cached asset of same type
+              return caches.match(request, { ignoreSearch: true });
             }
             throw error;
           });
