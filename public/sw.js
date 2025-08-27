@@ -15,8 +15,8 @@ const STATIC_CACHE_URLS = isProduction ? [
   '/terms.json',
   '/manifest.json',
   // Icons that should exist
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  '/icons/android/android-launchericon-192-192.png',
+  '/icons/android/android-launchericon-512-512.png',
   // Note: Bundled JS/CSS files have hashes in names, so we'll cache them dynamically
 ] : [
   // Development files
@@ -39,7 +39,8 @@ const STATIC_CACHE_URLS = isProduction ? [
   '/src/js/pwa.js',
   '/public/terms.json',
   '/public/manifest.json',
-  '/public/icons/icon-192x192.png'
+  '/public/icons/android/android-launchericon-192-192.png',
+  '/public/icons/android/android-launchericon-512-512.png'
 ];
 
 // Install event - cache all static resources
