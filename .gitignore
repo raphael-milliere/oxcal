@@ -1,6 +1,7 @@
 # Project files
 documentation/
 *.md.backup
+CLAUDE.md
 
 # Development configs
 netlify.toml
