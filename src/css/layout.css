@@ -195,6 +195,7 @@
 .search-input-group {
   display: flex;
   gap: 0; /* No gap - buttons connect */
+  position: relative;
 }
 
 .search-input {
@@ -221,7 +222,9 @@
 }
 
 .search-help {
-  display: none; /* Remove help text - use placeholder instead */
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-sm);
 }
 
 /* Calendar Section - Dense grid layout */
@@ -312,9 +315,10 @@
 
 .term-legend {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-sm);
+  flex-direction: row;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-sm);
 }
 
 .legend-item {
@@ -327,8 +331,8 @@
 }
 
 .legend-color {
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
   border: var(--border-width) solid var(--color-border);
 }
 

@@ -2,6 +2,8 @@
  * Service for accessing and querying Oxford term data
  */
 
+import { parseISODate } from './dateUtils.js';
+
 let termsData = null;
 
 /**
@@ -80,22 +82,21 @@ export function findTermWeekForDate(date) {
     throw new Error('Terms data not loaded. Call loadTermsData() first.');
   }
   
-  const searchDate = typeof date === 'string' ? new Date(date) : date;
-  const searchDateStr = searchDate.toISOString().split('T')[0];
-  
+  const searchDate = typeof date === 'string' ? parseISODate(date) : date;
+
   for (const yearData of termsData.terms) {
     for (const termName of ['michaelmas', 'hilary', 'trinity']) {
       const termData = yearData[termName];
       if (!termData) continue;
-      
+
       for (let weekNum = 0; weekNum <= 12; weekNum++) {
         const weekData = termData[`week${weekNum}`];
         if (!weekData) continue;
-        
-        const startDate = new Date(weekData.start);
-        const endDate = new Date(weekData.end);
-        endDate.setHours(23, 59, 59, 999); // Include the full end day
-        
+
+        const startDate = parseISODate(weekData.start);
+        const endDate = parseISODate(weekData.end);
+        endDate.setHours(23, 59, 59, 999);
+
         if (searchDate >= startDate && searchDate <= endDate) {
           return {
             year: yearData.year,

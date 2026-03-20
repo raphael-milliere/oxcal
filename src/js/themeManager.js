@@ -19,8 +19,8 @@ class ThemeManager {
   init() {
     if (this.initialized) return;
     
-    // Get theme preference - default to light theme
-    this.currentTheme = this.getStoredTheme() || THEME_LIGHT;
+    // Get theme preference - fall back to system preference
+    this.currentTheme = this.getStoredTheme() || this.getSystemPreference();
     
     // Ensure data-theme attribute is set immediately
     const root = document.documentElement;

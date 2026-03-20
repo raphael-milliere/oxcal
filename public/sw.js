@@ -84,8 +84,8 @@ self.addEventListener('activate', event => {
         return Promise.all(
           cacheNames
             .filter(cacheName => {
-              // Delete old cache versions
-              return cacheName.startsWith('oxcal-') && cacheName !== CACHE_NAME;
+              // Delete old cache versions but preserve runtime cache
+              return cacheName.startsWith('oxcal-') && cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE;
             })
             .map(cacheName => {
               console.log('[Service Worker] Deleting old cache:', cacheName);

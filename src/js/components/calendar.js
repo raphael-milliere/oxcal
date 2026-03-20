@@ -458,23 +458,16 @@ export class Calendar {
    * @param {Date} date - Date to announce
    */
   announceDate(date) {
-    const announcement = document.createElement('div');
-    announcement.setAttribute('role', 'status');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.className = 'visually-hidden';
-    
     const termWeek = findTermWeekForDate(date);
     let text = formatDate(date, 'full');
     if (termWeek) {
       text += `, ${termWeek.term} Term Week ${termWeek.week}`;
     }
-    
-    announcement.textContent = text;
-    document.body.appendChild(announcement);
-    
-    setTimeout(() => {
-      document.body.removeChild(announcement);
-    }, 1000);
+
+    const liveRegion = document.getElementById('live-region');
+    if (liveRegion) {
+      liveRegion.textContent = text;
+    }
   }
   
   /**

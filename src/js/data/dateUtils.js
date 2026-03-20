@@ -227,8 +227,8 @@ export function formatWeekRange(sundayStart, saturdayEnd) {
   
   // Check if same month
   if (mondayStart.getMonth() === endDate.getMonth() && mondayStart.getFullYear() === endDate.getFullYear()) {
-    // Same month: "Monday, 10 November – Saturday, 15 November 2025"
-    return `${startDay}, ${startDateNum} ${startMonth} – ${endDay}, ${endDateNum} ${endMonth} ${endYear}`;
+    // Same month: "Monday, 10 – Saturday, 15 November 2025"
+    return `${startDay}, ${startDateNum} – ${endDay}, ${endDateNum} ${endMonth} ${endYear}`;
   } else {
     // Different months: "Monday, 28 October – Saturday, 3 November 2025"
     return `${startDay}, ${startDateNum} ${startMonth} – ${endDay}, ${endDateNum} ${endMonth} ${endYear}`;

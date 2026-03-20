@@ -93,12 +93,6 @@
   ],
   "shortcuts": [
     {
-      "name": "Current Term",
-      "short_name": "Current",
-      "description": "View current term information",
-      "url": "/?view=current"
-    },
-    {
       "name": "Search Dates",
       "short_name": "Search",
       "description": "Look up term weeks and dates",

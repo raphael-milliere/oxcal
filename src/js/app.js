@@ -2,10 +2,10 @@
  * Main application entry point
  */
 
-import { loadTermsData, getCurrentAcademicYear, findTermWeekForDate } from './data/termService.js';
+import { loadTermsData, findTermWeekForDate } from './data/termService.js';
 import { getToday, formatDate } from './data/dateUtils.js';
 import { Calendar } from './components/calendar.js';
-import { search, generateSuggestions, getSuggestionHTML } from './search/index.js';
+import { search, generateSuggestions } from './search/index.js';
 import themeManager from './themeManager.js';
 import './pwa.js';
 
@@ -42,8 +42,9 @@ async function init() {
     // Initialize UI components
     initializeCalendar();
     initializeEventListeners();
+    handleURLParams();
     updateInfoPanel('today');
-    
+
     showLoading(false);
   } catch (error) {
     console.error('Failed to initialize app:', error);
@@ -195,6 +196,20 @@ function initializeEventListeners() {
         appState.calendar.navigateMonth(1);
       }
     });
+  }
+}
+
+/**
+ * Handle URL parameters from manifest shortcuts
+ */
+function handleURLParams() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('focus') === 'search') {
+    const searchInput = document.getElementById('date-search');
+    if (searchInput) {
+      searchInput.focus();
+    }
   }
 }
 
@@ -409,12 +424,12 @@ function displaySuggestions(suggestions) {
   const html = suggestions.map((s, index) => {
     const isSelected = index === appState.selectedSuggestionIndex;
     return `
-      <div class="suggestion-item ${isSelected ? 'selected' : ''}" 
-           role="option" 
+      <div class="suggestion-item ${isSelected ? 'selected' : ''}"
+           role="option"
            aria-selected="${isSelected}"
            data-index="${index}">
-        ${getSuggestionHTML(s).match(/<div class="suggestion-text">(.*?)<\/div>/)?.[0] || ''}
-        ${getSuggestionHTML(s).match(/<div class="suggestion-description">(.*?)<\/div>/)?.[0] || ''}
+        <div class="suggestion-text">${s.text}</div>
+        <div class="suggestion-description">${s.description || ''}</div>
       </div>
     `;
   }).join('');
@@ -473,20 +488,21 @@ function selectSuggestion(index) {
  */
 function announceSelectedSuggestion() {
   if (appState.selectedSuggestionIndex < 0) return;
-  
+
   const suggestion = appState.suggestions[appState.selectedSuggestionIndex];
   if (!suggestion) return;
-  
-  const announcement = document.createElement('div');
-  announcement.setAttribute('role', 'status');
-  announcement.setAttribute('aria-live', 'polite');
-  announcement.className = 'visually-hidden';
-  announcement.textContent = `${suggestion.text}, ${suggestion.description || ''}`;
-  
-  document.body.appendChild(announcement);
-  setTimeout(() => {
-    document.body.removeChild(announcement);
-  }, 1000);
+
+  announce(`${suggestion.text}, ${suggestion.description || ''}`);
+}
+
+/**
+ * Update the persistent live region with a message
+ */
+function announce(message) {
+  const liveRegion = document.getElementById('live-region');
+  if (liveRegion) {
+    liveRegion.textContent = message;
+  }
 }
 
 /**
@@ -649,11 +665,19 @@ function showLoading(show) {
 }
 
 /**
- * Show error message
+ * Show error message in the info panel
  */
 function showError(message) {
   console.error(message);
-  // In a real app, would show this in the UI
+  const infoPanel = document.getElementById('info-panel');
+  if (infoPanel) {
+    infoPanel.innerHTML = `
+      <div class="info-content error">
+        <div class="info-line primary">Error</div>
+        <div class="info-line secondary">${message}</div>
+      </div>
+    `;
+  }
 }
 
 // Initialize app when DOM is ready

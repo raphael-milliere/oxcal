@@ -260,8 +260,18 @@ th {
   font-family: var(--font-family-mono);
 }
 
-/* Remove all animations */
-* {
+/* Remove animations for brutalist design (scoped to app elements) */
+.app-header,
+.app-main,
+.calendar-grid,
+.calendar-day,
+.search-section,
+.info-panel,
+.modal-overlay,
+.nav-button,
+.theme-toggle,
+.search-button,
+.btn {
   animation: none !important;
   transition: none !important;
 }

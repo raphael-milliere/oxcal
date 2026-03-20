@@ -9,8 +9,7 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
-        main: './index.html',
-        sw: './public/sw.js'
+        main: './index.html'
       }
     }
   },

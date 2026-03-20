@@ -136,10 +136,18 @@
         <div id="info-panel" class="info-panel" aria-live="polite">
           <!-- Unified information display will be shown here -->
         </div>
+        <div class="term-legend" aria-label="Term colour key">
+          <div class="legend-item"><span class="legend-color michaelmas"></span> Michaelmas</div>
+          <div class="legend-item"><span class="legend-color hilary"></span> Hilary</div>
+          <div class="legend-item"><span class="legend-color trinity"></span> Trinity</div>
+        </div>
       </section>
       
     </div>
   </main>
+
+  <!-- Screen reader live region -->
+  <div id="live-region" class="visually-hidden" role="status" aria-live="polite"></div>
 
   <!-- Loading State -->
   <div id="loading" class="loading-overlay" aria-hidden="true">

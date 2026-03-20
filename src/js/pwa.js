@@ -39,13 +39,6 @@ class PWAManager {
     // Check if app was launched from home screen (iOS)
     if (window.navigator.standalone === true) {
       this.isInstalled = true;
-      return;
-    }
-    
-    // Check URL parameters for PWA launch
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('source') === 'pwa') {
-      this.isInstalled = true;
     }
   }
   
