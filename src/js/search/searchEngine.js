@@ -31,7 +31,16 @@ export function search(query) {
     
     case 'day-term-week':
       return searchDayTermWeek(parsed);
-    
+
+    case 'term-info':
+      if (parsed.variant === 'start') {
+        return searchTermWeek({ ...parsed, type: 'term-week', week: 1 });
+      } else if (parsed.variant === 'end') {
+        return searchTermWeek({ ...parsed, type: 'term-week', week: 8 });
+      } else {
+        return searchTermWeek({ ...parsed, type: 'term-week', week: parsed.week ?? 1 });
+      }
+
     default:
       return {
         success: false,

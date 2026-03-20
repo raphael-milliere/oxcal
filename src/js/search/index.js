@@ -2,7 +2,7 @@
  * Search module exports
  */
 
-export { parseQuery, getSuggestions } from './queryParser.js';
+export { parseQuery, getSuggestions, setTermData } from './queryParser.js';
 export { search, searchMultiple, getResultSummary } from './searchEngine.js';
 export { 
   generateSuggestions, 
