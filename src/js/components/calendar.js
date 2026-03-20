@@ -67,6 +67,17 @@ export class Calendar {
     this.highlightedDates = dates || [];
     this.render();
   }
+
+  /**
+   * Set month and highlight dates in a single render pass
+   * @param {Date} date - Any date in the desired month
+   * @param {Array<Date>} dates - Dates to highlight
+   */
+  setMonthAndHighlight(date, dates) {
+    this.currentMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    this.highlightedDates = dates || [];
+    this.render();
+  }
   
   /**
    * Clear all highlighted dates

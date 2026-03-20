@@ -30,6 +30,14 @@ export async function loadTermsData() {
 }
 
 /**
+ * Get the loaded terms data object (null if not yet loaded)
+ * @returns {Object|null}
+ */
+export function getLoadedTermData() {
+  return termsData;
+}
+
+/**
  * Get all terms for a specific academic year
  * @param {string} year - Academic year in format "YYYY-YY" (e.g., "2024-25")
  * @returns {Object|null} Year data containing all three terms

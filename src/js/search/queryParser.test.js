@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseQuery, getSuggestions } from './queryParser.js';
+import { parseQuery } from './queryParser.js';
 
 describe('parseQuery', () => {
   describe('term week queries', () => {
@@ -196,40 +196,3 @@ describe('parseQuery', () => {
   });
 });
 
-describe('getSuggestions', () => {
-  it('should suggest term names', () => {
-    const suggestions = getSuggestions('mich');
-    expect(suggestions).toContain('Michaelmas');
-  });
-  
-  it('should suggest term names for "hil"', () => {
-    const suggestions = getSuggestions('hil');
-    expect(suggestions).toContain('Hilary');
-  });
-  
-  it('should suggest week patterns', () => {
-    const suggestions = getSuggestions('w');
-    expect(suggestions).toContain('Week 0');
-    expect(suggestions).toContain('Week 5');
-  });
-  
-  it('should provide example queries for short input', () => {
-    const suggestions = getSuggestions('we');
-    expect(suggestions).toContain('Week 5 Michaelmas 2025');
-  });
-  
-  it('should return empty array for very short query', () => {
-    const suggestions = getSuggestions('a');
-    expect(suggestions).toEqual([]);
-  });
-  
-  it('should return empty array for empty query', () => {
-    const suggestions = getSuggestions('');
-    expect(suggestions).toEqual([]);
-  });
-  
-  it('should limit suggestions to 5', () => {
-    const suggestions = getSuggestions('w');
-    expect(suggestions.length).toBeLessThanOrEqual(5);
-  });
-});

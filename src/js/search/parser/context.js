@@ -76,7 +76,7 @@ function parseDate(str) {
   return new Date(y, m - 1, d);
 }
 
-function guessAcademicYear(date) {
+export function guessAcademicYear(date) {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   if (month >= 7) {
@@ -85,7 +85,7 @@ function guessAcademicYear(date) {
   return `${year - 1}-${year.toString().slice(-2)}`;
 }
 
-function guessTerm(date) {
+export function guessTerm(date) {
   const month = date.getMonth() + 1;
   if (month >= 10 || month <= 1) return 'michaelmas';
   if (month >= 2 && month <= 4) return 'hilary';

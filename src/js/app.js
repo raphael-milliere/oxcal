@@ -5,7 +5,7 @@
 import { loadTermsData, findTermWeekForDate } from './data/termService.js';
 import { getToday, formatDate } from './data/dateUtils.js';
 import { Calendar } from './components/calendar.js';
-import { search, generateSuggestions, setTermData } from './search/index.js';
+import { search, generateSuggestions } from './search/index.js';
 import themeManager from './themeManager.js';
 import './pwa.js';
 
@@ -33,9 +33,8 @@ async function init() {
     themeManager.init();
     
     // Load terms data
-    const termData = await loadTermsData();
+    await loadTermsData();
     appState.termsLoaded = true;
-    setTermData(termData);
     
     // Set current month to today
     appState.currentMonth = new Date();
@@ -288,8 +287,7 @@ function handleSearch() {
     if (results.dates && results.dates.length > 0) {
       const firstDate = results.dates[0];
       if (appState.calendar) {
-        appState.calendar.setMonth(firstDate);
-        appState.calendar.highlightDates(results.dates);
+        appState.calendar.setMonthAndHighlight(firstDate, results.dates);
         appState.currentMonth = firstDate;
         updateMonthHeader();
       }
