@@ -150,6 +150,7 @@ function classifyUnambiguous(token) {
 function disambiguateNumbers(classified) {
   const hasMonth = classified.some(t => t.type === 'month');
   const hasTerm = classified.some(t => t.type === 'term' || t.type === 'term-year');
+  const hasWeekKeyword = classified.some(t => t.type === 'week' && t.value === null);
   const hasWeekValue = classified.some(t => t.type === 'week' && t.value !== null);
 
   for (const token of classified) {
@@ -170,8 +171,8 @@ function disambiguateNumbers(classified) {
       continue;
     }
 
-    // If term present but no week value, number 0-12 -> week-number
-    if (hasTerm && !hasWeekValue && num >= 0 && num <= 12) {
+    // If term or week keyword present but no week value, number 0-12 -> week-number
+    if ((hasTerm || hasWeekKeyword) && !hasWeekValue && num >= 0 && num <= 12) {
       token.type = 'week-number';
       token.value = num;
       token.confidence = 1.0;
