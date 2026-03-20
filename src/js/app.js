@@ -290,6 +290,8 @@ function handleSearch() {
       if (appState.calendar) {
         appState.calendar.setMonth(firstDate);
         appState.calendar.highlightDates(results.dates);
+        appState.currentMonth = firstDate;
+        updateMonthHeader();
       }
     }
   } else {
