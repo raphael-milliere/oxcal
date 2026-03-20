@@ -24,11 +24,6 @@
   --color-text-muted: #4a5f7a;
   --color-muted-bg: #dde2ea;  /* Stronger muted background */
 
-  /* Term background tints for calendar rhythm */
-  --color-michaelmas-tint: #faf6f7;
-  --color-hilary-tint: #f5f7f9;
-  --color-trinity-tint: #f5f8f7;
-
   /* Typography - Intentional brutalist choices */
   --font-family: 'Familjen Grotesk', 'Arial Narrow', Helvetica, sans-serif;
   --font-family-mono: 'Martian Mono', 'Courier New', Courier, monospace;
@@ -268,14 +263,18 @@ th {
   font-family: var(--font-family-mono);
 }
 
-/* Minimal transitions - snappy brutalist feel without visual flicker */
+/* Remove animations for brutalist design (scoped to app elements) */
+.app-header,
+.app-main,
+.calendar-grid,
 .calendar-day,
+.search-section,
+.info-panel,
+.modal-overlay,
 .nav-button,
 .theme-toggle,
-.info-button,
-.github-button,
 .search-button,
-.btn,
-.suggestion-item {
-  transition: background-color 60ms ease-out, color 60ms ease-out, border-color 60ms ease-out;
+.btn {
+  animation: none !important;
+  transition: none !important;
 }

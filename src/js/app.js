@@ -44,7 +44,6 @@ async function init() {
     initializeEventListeners();
     handleURLParams();
     updateInfoPanel('today');
-    updateHeaderTermContext();
 
     showLoading(false);
   } catch (error) {
@@ -198,16 +197,6 @@ function initializeEventListeners() {
       }
     });
   }
-
-  // Global "/" keyboard shortcut to focus search
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !e.target.closest('input, textarea, select') &&
-        !document.getElementById('info-modal')?.classList.contains('active')) {
-      e.preventDefault();
-      const searchInput = document.getElementById('date-search');
-      if (searchInput) searchInput.focus();
-    }
-  });
 }
 
 /**
@@ -540,26 +529,6 @@ function updateMonthHeader() {
 }
 
 /**
- * Update header term context indicator (mobile)
- */
-function updateHeaderTermContext() {
-  const el = document.getElementById('term-context');
-  if (!el) return;
-
-  const today = getToday();
-  const termWeek = findTermWeekForDate(today);
-
-  if (termWeek) {
-    const abbrevs = { michaelmas: 'MT', hilary: 'HT', trinity: 'TT' };
-    const abbrev = abbrevs[termWeek.term.toLowerCase()] || termWeek.term;
-    const year = String(today.getFullYear()).slice(-2);
-    el.textContent = `${abbrev}${year} Wk${termWeek.week}`;
-  } else {
-    el.textContent = '';
-  }
-}
-
-/**
  * Update the unified info panel based on current state
  */
 function updateInfoPanel(mode, data = null) {
@@ -576,13 +545,10 @@ function updateInfoPanel(mode, data = null) {
       
       if (todayTermWeek) {
         const termName = todayTermWeek.term.charAt(0).toUpperCase() + todayTermWeek.term.slice(1);
-        const weekLabel = todayTermWeek.week >= 1 && todayTermWeek.week <= 8
-          ? `Week ${todayTermWeek.week} of 8`
-          : `Week ${todayTermWeek.week} (extended)`;
         html = `
           <div class="info-content">
             <div class="info-line primary">${formatDate(today, 'full')}</div>
-            <div class="info-line secondary">${termName} Term — ${weekLabel}</div>
+            <div class="info-line secondary">${termName} Term, Week ${todayTermWeek.week}</div>
           </div>
         `;
       } else {
@@ -603,13 +569,10 @@ function updateInfoPanel(mode, data = null) {
       
       if (selectedTermWeek) {
         const termName = selectedTermWeek.term.charAt(0).toUpperCase() + selectedTermWeek.term.slice(1);
-        const weekLabel = selectedTermWeek.week >= 1 && selectedTermWeek.week <= 8
-          ? `Week ${selectedTermWeek.week} of 8`
-          : `Week ${selectedTermWeek.week} (extended)`;
         html = `
           <div class="info-content">
             <div class="info-line primary">${formatDate(selectedDate, 'full')}</div>
-            <div class="info-line secondary">${termName} Term — ${weekLabel}</div>
+            <div class="info-line secondary">${termName} Term, Week ${selectedTermWeek.week}</div>
           </div>
         `;
       } else {

@@ -217,9 +217,8 @@ export class Calendar {
     dayNumber.textContent = date.getDate();
     dayDiv.appendChild(dayNumber);
     
-    // Add term week badge - show on Mondays by default, all days when highlighted
-    const isMonday = date.getDay() === 1;
-    if (termWeek && (isCurrentMonth || isHighlighted) && (isMonday || isHighlighted)) {
+    // Add term week badge if applicable
+    if (termWeek && (isCurrentMonth || isHighlighted)) {
       const badge = document.createElement('div');
       badge.innerHTML = this.createTermWeekBadge(termWeek);
       dayDiv.appendChild(badge);
@@ -262,12 +261,11 @@ export class Calendar {
     // Clear container
     this.container.innerHTML = '';
     
-    // Add day headers with abbreviated variants for small screens
-    const dayAbbrs = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    // Add day headers
     this.dayNames.forEach((dayName, index) => {
       const header = document.createElement('div');
       header.className = 'calendar-day-header';
-      header.innerHTML = `<span class="day-full">${dayName}</span><span class="day-abbr">${dayAbbrs[index]}</span>`;
+      header.textContent = dayName;
       header.setAttribute('role', 'columnheader');
       header.setAttribute('aria-label', ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][index]);
       this.container.appendChild(header);

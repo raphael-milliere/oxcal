@@ -140,8 +140,8 @@ describe('Calendar Component', () => {
       calendar.render();
       const headers = container.querySelectorAll('.calendar-day-header');
       expect(headers).toHaveLength(7);
-      expect(headers[0].querySelector('.day-full').textContent).toBe('Mon');
-      expect(headers[6].querySelector('.day-full').textContent).toBe('Sun');
+      expect(headers[0].textContent).toBe('Mon');
+      expect(headers[6].textContent).toBe('Sun');
     });
     
     it('should render 42 day cells', () => {

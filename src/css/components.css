@@ -31,19 +31,6 @@
   border-right: none;
 }
 
-.day-abbr {
-  display: none;
-}
-
-@media (max-width: 374px) {
-  .day-full {
-    display: none;
-  }
-  .day-abbr {
-    display: inline;
-  }
-}
-
 /* Calendar Day Cell */
 .calendar-day {
   background-color: var(--color-background);
@@ -66,19 +53,6 @@
 
 .calendar-day:hover:not(.other-month) {
   background-color: var(--color-surface);
-}
-
-/* Term background tints for visual rhythm */
-.calendar-day.term-michaelmas:not(.other-month):not(.highlighted):not(.today) {
-  background-color: var(--color-michaelmas-tint);
-}
-
-.calendar-day.term-hilary:not(.other-month):not(.highlighted):not(.today) {
-  background-color: var(--color-hilary-tint);
-}
-
-.calendar-day.term-trinity:not(.other-month):not(.highlighted):not(.today) {
-  background-color: var(--color-trinity-tint);
 }
 
 .calendar-day.other-month {
@@ -229,11 +203,6 @@
 .calendar-day.other-month .day-number {
   color: var(--color-text-muted);
   font-weight: 400;
-  opacity: 0.5;
-}
-
-.calendar-day.other-month.highlighted {
-  opacity: 0.5;
 }
 
 /* Term Week Badge - Readable labels */
