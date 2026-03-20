@@ -177,8 +177,8 @@ For queries containing question words, matched after entity extraction. Patterns
 
 | Pattern | Intent |
 |---|---|
-| "when does {term} start/begin" | `term-info` (start date) |
-| "when does {term} end/finish" | `term-info` (end date) |
+| "when does {term} start/begin" | `term-info` (variant: `start`) |
+| "when does {term} end/finish" | `term-info` (variant: `end`) |
 | "what week is {date}" | `date` |
 | "what week is it" / "what week are we in" | `relative` -> today |
 | "what's the date of {day} week {n}" | `day-term-week` |
@@ -194,7 +194,7 @@ For queries containing question words, matched after entity extraction. Patterns
     term?: string,
     week?: number,
     year?: string,
-    day?: number,
+    dayOfWeek?: number,    // 0-6 (Sunday=0) — matches existing API contract
     month?: number,
     dayNumber?: number,
     relative?: string
@@ -203,6 +203,8 @@ For queries containing question words, matched after entity extraction. Patterns
   conversational?: string  // matched pattern name, if any
 }
 ```
+
+**Note on field naming:** The classifier uses `day` internally, but the intent resolver maps it to `dayOfWeek` in the output to match the existing `parseQuery()` / `searchEngine.js` API contract. All existing tests assert on `dayOfWeek`.
 
 ## 7. Stage 4: Default Resolver & Error Reporter
 
@@ -305,19 +307,35 @@ src/js/search/
 ### Public API (No Breaking Changes)
 
 ```js
-parseQuery(string)          -> { type, ...entities, assumed?, error? }
-search(string)              -> { success, type, ...data }
-generateSuggestions(string) -> Suggestion[]
+parseQuery(string)               -> { type, ...entities, assumed?, error? }
+search(string)                   -> { success, type, ...data }
+getSuggestions(string)            -> string[]  (from queryParser.js — kept as thin wrapper)
+generateSuggestions(string, opts) -> Suggestion[]  (from suggestions.js)
+formatSuggestionsForDisplay(arr)  -> string[]
+getSuggestionHTML(suggestion)     -> string
 ```
+
+`getSuggestions()` is currently exported from `queryParser.js` and exercised in tests. It will be kept as a thin wrapper that delegates to the new tokenizer/classifier-based suggestion logic, preserving the existing return type (array of strings). The richer `generateSuggestions()` from `suggestions.js` remains the primary suggestion API for the UI.
 
 ### Search Engine Changes
 
-Add one case to the switch in `searchEngine.js`:
+Add one case to the switch in `searchEngine.js` for `term-info`, with sub-behaviors based on the `variant` field:
 
 ```js
 case 'term-info':
-  return searchTermWeek({ ...parsed, week: parsed.week ?? 1 });
+  if (parsed.variant === 'start') {
+    // "When does Hilary start?" → return Week 1 start date as single-date
+    return searchTermWeek({ ...parsed, week: 1 });
+  } else if (parsed.variant === 'end') {
+    // "When does Hilary end?" → return Week 8 end date as single-date
+    return searchTermWeek({ ...parsed, week: 8 });
+  } else {
+    // Plain "Michaelmas 2025" → default to Week 1
+    return searchTermWeek({ ...parsed, week: parsed.week ?? 1 });
+  }
 ```
+
+The `variant` field is set by the intent resolver when a conversational pattern is matched. For plain term-only queries (no conversational pattern), variant is absent and defaults to Week 1.
 
 ### Suggestions Refactor
 
