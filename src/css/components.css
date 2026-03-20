@@ -105,6 +105,16 @@
   color: white;
 }
 
+/* Ensure text visibility on highlighted cells */
+.calendar-day.highlighted .day-number {
+  color: white;
+}
+
+.calendar-day.highlighted .term-week-badge {
+  background: white !important;
+  color: var(--color-primary) !important;
+}
+
 /* Highlighting for dates outside term time */
 .calendar-day.highlighted:not(.term-michaelmas):not(.term-hilary):not(.term-trinity) {
   background-color: var(--color-primary) !important;
