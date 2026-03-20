@@ -24,10 +24,15 @@
   --color-hilary-faded: #2e4a64;
   --color-trinity-faded: #2a5240;
 
+  /* Term background tints for calendar rhythm */
+  --color-michaelmas-tint: #1a1c2e;
+  --color-hilary-tint: #111f33;
+  --color-trinity-tint: #0f1f2e;
+
   /* Dark neutrals */
   --color-background: #0a1628;
   --color-surface: #111e33;
-  --color-border: #1e3a5f;
+  --color-border: #2a4f7a;
   --color-text: #dce6f0;
   --color-text-muted: #7a96b4;
   --color-muted-bg: #0e1a2d;

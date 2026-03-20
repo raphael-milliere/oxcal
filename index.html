@@ -52,6 +52,7 @@
         <div class="header-text">
           <h1 class="app-title">OxCal</h1>
           <p class="app-subtitle">Oxford University Term Calendar</p>
+          <span id="term-context" class="term-context"></span>
         </div>
         <div class="header-actions">
           <button type="button"
@@ -100,7 +101,7 @@
       <section class="search-section" aria-label="Date Search">
         <div class="search-container">
           <label for="date-search" class="search-label">
-            Look up a date or term week:
+            Look up a date or term week <kbd class="search-kbd">/</kbd>
           </label>
           <div class="search-input-group">
             <input 
@@ -129,6 +130,11 @@
             <span aria-hidden="true">›</span>
           </button>
         </div>
+        <div class="calendar-legend" aria-label="Term colour key">
+          <div class="legend-item"><span class="legend-color michaelmas"></span> Michaelmas</div>
+          <div class="legend-item"><span class="legend-color hilary"></span> Hilary</div>
+          <div class="legend-item"><span class="legend-color trinity"></span> Trinity</div>
+        </div>
         <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="Calendar">
           <!-- Calendar will be generated here -->
         </div>
@@ -138,11 +144,6 @@
       <section class="info-panel-section" aria-label="Date Information">
         <div id="info-panel" class="info-panel" aria-live="polite">
           <!-- Unified information display will be shown here -->
-        </div>
-        <div class="term-legend" aria-label="Term colour key">
-          <div class="legend-item"><span class="legend-color michaelmas"></span> Michaelmas</div>
-          <div class="legend-item"><span class="legend-color hilary"></span> Hilary</div>
-          <div class="legend-item"><span class="legend-color trinity"></span> Trinity</div>
         </div>
       </section>
       

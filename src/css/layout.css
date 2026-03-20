@@ -63,6 +63,24 @@
   display: none; /* Hide on mobile by default */
 }
 
+.term-context {
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-mono);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+}
+
+.term-context:empty {
+  display: none;
+}
+
+.term-context:not(:empty)::before {
+  content: '·';
+  margin-right: var(--spacing-sm);
+  opacity: 0.5;
+}
+
 /* Theme Toggle - Minimal square button */
 .theme-toggle {
   background: transparent;
@@ -184,7 +202,7 @@
 
 /* Search Section - Compact, visually subordinate to calendar */
 .search-section {
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width-thick) solid var(--color-border);
   padding: var(--spacing-sm) var(--spacing-md);
   margin-bottom: var(--spacing-md);
   background: var(--color-surface);
@@ -202,6 +220,23 @@
   margin-bottom: var(--spacing-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+.search-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  font-weight: 700;
+  border: var(--border-width) solid currentColor;
+  opacity: 0.5;
+  vertical-align: middle;
+  margin-left: var(--spacing-sm);
+  text-transform: none;
 }
 
 .search-input-group {
@@ -334,12 +369,15 @@
   opacity: 0.8;
 }
 
-.term-legend {
+.calendar-legend {
   display: flex;
   flex-direction: row;
   gap: var(--spacing-xl);
-  margin-top: var(--spacing-sm);
-  font-size: var(--font-size-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-bottom: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+  flex-shrink: 0;
+  justify-content: center;
 }
 
 .legend-item {
@@ -447,7 +485,7 @@
     padding: var(--spacing-xs) var(--spacing-md);
   }
 
-  .term-legend {
+  .calendar-legend {
     display: none;
   }
 }
@@ -466,7 +504,7 @@
     font-size: 10px;
   }
 
-  .term-legend {
+  .calendar-legend {
     gap: var(--spacing-md);
   }
 
@@ -501,6 +539,10 @@
 
   .app-subtitle {
     display: inline;
+  }
+
+  .term-context {
+    display: none;
   }
 
   .calendar-header {
