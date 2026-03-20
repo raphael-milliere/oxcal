@@ -1,19 +1,19 @@
 {
   "planPath": "docs/superpowers/plans/2026-03-20-nl-parser.md",
   "tasks": [
-    {"id": 0, "subject": "Task 0: Setup & Baseline", "status": "pending"},
-    {"id": 1, "subject": "Task 1: Fuzzy Match Utility", "status": "pending", "blockedBy": [0]},
-    {"id": 2, "subject": "Task 2: Entity Dictionaries & Patterns", "status": "pending", "blockedBy": [0]},
-    {"id": 3, "subject": "Task 3: Tokenizer", "status": "pending", "blockedBy": [0]},
-    {"id": 4, "subject": "Task 4: Token Classifier", "status": "pending", "blockedBy": [1, 2, 3]},
-    {"id": 5, "subject": "Task 5: Context Module", "status": "pending", "blockedBy": [2]},
-    {"id": 6, "subject": "Task 6: Intent Resolver", "status": "pending", "blockedBy": [4, 5]},
-    {"id": 7, "subject": "Task 7: Default Resolver", "status": "pending", "blockedBy": [5, 6]},
-    {"id": 8, "subject": "Task 8: Rewrite queryParser.js as Orchestrator", "status": "pending", "blockedBy": [1, 2, 3, 4, 5, 6, 7]},
-    {"id": 9, "subject": "Task 9: Update searchEngine + app wiring", "status": "pending", "blockedBy": [8]},
-    {"id": 10, "subject": "Task 10: Integration Tests", "status": "pending", "blockedBy": [8, 9]},
-    {"id": 11, "subject": "Task 11: Suggestions Refactor", "status": "pending", "blockedBy": [8]},
-    {"id": 12, "subject": "Task 12: Final Verification", "status": "pending", "blockedBy": [9, 10, 11]}
+    {"id": 0, "subject": "Task 0: Setup & Baseline", "status": "completed", "lastUpdated": "2026-03-20T17:15:00Z"},
+    {"id": 1, "subject": "Task 1: Fuzzy Match Utility", "status": "completed", "blockedBy": [0], "lastUpdated": "2026-03-20T17:16:00Z"},
+    {"id": 2, "subject": "Task 2: Entity Dictionaries & Patterns", "status": "completed", "blockedBy": [0], "lastUpdated": "2026-03-20T17:16:00Z"},
+    {"id": 3, "subject": "Task 3: Tokenizer", "status": "completed", "blockedBy": [0], "lastUpdated": "2026-03-20T17:16:00Z"},
+    {"id": 4, "subject": "Task 4: Token Classifier", "status": "completed", "blockedBy": [1, 2, 3], "lastUpdated": "2026-03-20T17:19:00Z"},
+    {"id": 5, "subject": "Task 5: Context Module", "status": "completed", "blockedBy": [2], "lastUpdated": "2026-03-20T17:19:00Z"},
+    {"id": 6, "subject": "Task 6: Intent Resolver", "status": "completed", "blockedBy": [4, 5], "lastUpdated": "2026-03-20T17:21:00Z"},
+    {"id": 7, "subject": "Task 7: Default Resolver", "status": "completed", "blockedBy": [5, 6], "lastUpdated": "2026-03-20T17:22:00Z"},
+    {"id": 8, "subject": "Task 8: Rewrite queryParser.js as Orchestrator", "status": "completed", "blockedBy": [1, 2, 3, 4, 5, 6, 7], "lastUpdated": "2026-03-20T17:24:00Z"},
+    {"id": 9, "subject": "Task 9: Update searchEngine + app wiring", "status": "completed", "blockedBy": [8], "lastUpdated": "2026-03-20T17:26:00Z"},
+    {"id": 10, "subject": "Task 10: Integration Tests", "status": "completed", "blockedBy": [8, 9], "lastUpdated": "2026-03-20T17:33:00Z"},
+    {"id": 11, "subject": "Task 11: Suggestions Refactor", "status": "completed", "blockedBy": [8], "lastUpdated": "2026-03-20T17:34:00Z"},
+    {"id": 12, "subject": "Task 12: Final Verification", "status": "completed", "blockedBy": [9, 10, 11], "lastUpdated": "2026-03-20T17:35:00Z"}
   ],
-  "lastUpdated": "2026-03-20T00:00:00Z"
+  "lastUpdated": "2026-03-20T17:35:00Z"
 }
