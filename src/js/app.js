@@ -27,8 +27,6 @@ let appState = {
  */
 async function init() {
   try {
-    showLoading(true);
-    
     // Initialize theme manager first (requires DOM to be ready)
     themeManager.init();
     
@@ -45,11 +43,9 @@ async function init() {
     handleURLParams();
     updateInfoPanel('today');
 
-    showLoading(false);
   } catch (error) {
     console.error('Failed to initialize app:', error);
     showError('Failed to load term data. Please refresh the page.');
-    showLoading(false);
   }
 }
 
@@ -649,20 +645,6 @@ function updateInfoPanel(mode, data = null) {
   }
   
   infoPanel.innerHTML = html;
-}
-
-/**
- * Show/hide loading overlay
- */
-function showLoading(show) {
-  const loadingElement = document.getElementById('loading');
-  if (loadingElement) {
-    if (show) {
-      loadingElement.classList.add('active');
-    } else {
-      loadingElement.classList.remove('active');
-    }
-  }
 }
 
 /**

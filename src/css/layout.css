@@ -376,47 +376,6 @@
   line-height: var(--line-height);
 }
 
-/* Loading Overlay - Stark and minimal */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--color-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.loading-overlay.active {
-  visibility: visible;
-  opacity: 1;
-}
-
-.loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: var(--border-width-thick) solid var(--color-border);
-  border-top-color: transparent;
-  animation: none;
-  position: relative;
-}
-
-.loading-spinner::after {
-  content: 'LOADING';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-
 /* Small mobile - maximize calendar space */
 @media (max-width: 374px) {
   .search-label {

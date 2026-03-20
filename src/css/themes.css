@@ -122,10 +122,6 @@
   color: var(--color-text);
 }
 
-[data-theme="dark"] .loading-overlay {
-  background-color: var(--color-background);
-}
-
 /* Dark theme term highlighting */
 [data-theme="dark"] .calendar-day.highlighted.term-michaelmas:not(.extended-week) {
   background-color: var(--color-michaelmas) !important;
@@ -217,11 +213,6 @@
   background: var(--color-surface);
   border-color: var(--color-border);
   color: var(--color-primary);
-}
-
-[data-theme="dark"] .loading-spinner {
-  border-color: var(--color-border);
-  color: var(--color-text);
 }
 
 [data-theme="dark"] .result-error {
