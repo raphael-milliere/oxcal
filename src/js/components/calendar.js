@@ -177,7 +177,8 @@ export class Calendar {
     if (isSameDay(date, new Date())) classes.push('today');
     if (this.selectedDate && isSameDay(date, this.selectedDate)) classes.push('selected');
     if (this.focusedDate && isSameDay(date, this.focusedDate)) classes.push('focused');
-    if (this.highlightedDates.some(d => isSameDay(d, date))) classes.push('highlighted');
+    const isHighlighted = this.highlightedDates.some(d => isSameDay(d, date));
+    if (isHighlighted) classes.push('highlighted');
     if (termWeek) {
       classes.push(`term-${termWeek.term.toLowerCase()}`);
       // Add extended-week class for weeks 0 and 9-12
@@ -217,7 +218,7 @@ export class Calendar {
     dayDiv.appendChild(dayNumber);
     
     // Add term week badge if applicable
-    if (termWeek && isCurrentMonth) {
+    if (termWeek && (isCurrentMonth || isHighlighted)) {
       const badge = document.createElement('div');
       badge.innerHTML = this.createTermWeekBadge(termWeek);
       dayDiv.appendChild(badge);

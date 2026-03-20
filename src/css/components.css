@@ -111,10 +111,12 @@
 /* Ensure text visibility on highlighted cells */
 .calendar-day.highlighted:not(.extended-week) .day-number {
   color: white;
+  font-weight: 700;
 }
 
 .calendar-day.highlighted.extended-week .day-number {
   color: var(--color-text);
+  font-weight: 700;
 }
 
 .calendar-day.highlighted:not(.extended-week) .term-week-badge {
