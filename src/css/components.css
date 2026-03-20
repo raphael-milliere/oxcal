@@ -1,12 +1,16 @@
 /* Brutalist component styles - Dense, functional, stark */
 
-/* Calendar Grid - Zero gaps, maximum density */
+/* Calendar Grid - Zero gaps, fills available height */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: auto;
+  grid-auto-rows: 1fr;
   gap: 0;
   background-color: var(--color-border);
   border-top: var(--border-width) solid var(--color-border);
+  flex: 1;
+  min-height: 0;
 }
 
 /* Calendar Day Headers */
@@ -30,7 +34,6 @@
 /* Calendar Day Cell */
 .calendar-day {
   background-color: var(--color-background);
-  min-height: 56px;
   padding: var(--spacing-sm) var(--spacing-xs);
   position: relative;
   cursor: pointer;
@@ -40,6 +43,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
+  min-height: 0;
+  overflow: hidden;
 }
 
 .calendar-day:nth-child(7n) {
@@ -211,6 +216,7 @@
   letter-spacing: 0.04em;
   line-height: 1.2;
   font-family: var(--font-family-mono);
+  white-space: nowrap;
 }
 
 /* Full term badges (weeks 1-8) */
@@ -544,7 +550,6 @@
   }
 
   .calendar-day {
-    min-height: 44px;
     padding: 2px 1px;
   }
 
@@ -576,7 +581,6 @@
 
 @media (min-width: 768px) {
   .calendar-day {
-    min-height: 68px;
     padding: var(--spacing-sm);
   }
 
@@ -588,7 +592,6 @@
 
 @media (min-width: 1024px) {
   .calendar-day {
-    min-height: 78px;
     padding: var(--spacing-sm) var(--spacing-md);
   }
 }
