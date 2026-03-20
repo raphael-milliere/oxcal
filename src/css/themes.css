@@ -8,34 +8,35 @@
 /* Dark Theme - Oxford Blue brutalist */
 [data-theme="dark"] {
   --theme-name: 'dark';
-  
+
   /* Oxford Blue dark palette */
-  --color-primary: #4A7BA7;  /* Light Oxford Blue */
+  --color-primary: #4A7BA7;
   --color-primary-hover: #6FA3D2;
-  --color-accent: #D4626D;  /* Light Oxford Red */
-  
-  /* Dark term colors - Oxford-inspired */
-  --color-michaelmas: #D4626D;  /* Light Oxford Red */
-  --color-hilary: #5E8AB4;  /* Medium Oxford Blue */
-  --color-trinity: #4A8B6F;  /* Medium Oxford Green */
-  
-  /* Faded term colors for extended weeks (0, 9-12) */
-  --color-michaelmas-faded: #D4626D60;  /* 38% opacity */
-  --color-hilary-faded: #5E8AB460;  /* 38% opacity */
-  --color-trinity-faded: #4A8B6F60;  /* 38% opacity */
-  
-  /* Dark neutrals - Oxford Blue tinted */
-  --color-background: #001122;  /* Very dark Oxford Blue */
-  --color-surface: #001833;  /* Dark Oxford Blue */
-  --color-border: #003366;  /* Medium Oxford Blue */
-  --color-text: #E8F0F7;  /* Light blue-tinted white */
-  --color-text-muted: #8FA9C7;
+  --color-accent: #D4626D;
+
+  /* Dark term colors */
+  --color-michaelmas: #D4626D;
+  --color-hilary: #5E8AB4;
+  --color-trinity: #4A8B6F;
+
+  /* Faded term colors - explicit dark-mode variants, readable on dark bg */
+  --color-michaelmas-faded: #6b3038;
+  --color-hilary-faded: #2e4a64;
+  --color-trinity-faded: #2a5240;
+
+  /* Dark neutrals */
+  --color-background: #0a1628;
+  --color-surface: #111e33;
+  --color-border: #1e3a5f;
+  --color-text: #dce6f0;
+  --color-text-muted: #7a96b4;
+  --color-muted-bg: #0e1a2d;
 }
 
 /* Dark theme specific overrides */
 [data-theme="dark"] .app-header {
-  background-color: var(--color-background);
-  border-bottom-color: var(--color-border);
+  background-color: #060e1c;
+  border-bottom-color: var(--color-accent);
 }
 
 [data-theme="dark"] .app-footer {
@@ -51,11 +52,35 @@
 [data-theme="dark"] .theme-toggle:hover {
   background: var(--color-primary);
   color: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .info-button {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .info-button:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .github-button {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .github-button:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-background);
 }
 
 [data-theme="dark"] .calendar-day-header {
-  background-color: var(--color-surface);
+  background-color: #060e1c;
   border-color: var(--color-border);
+  border-right-color: rgba(255,255,255,0.08);
 }
 
 [data-theme="dark"] .calendar-day.today {
@@ -70,6 +95,10 @@
 [data-theme="dark"] .calendar-day.today .term-week-badge {
   background: var(--color-background);
   color: var(--color-primary);
+}
+
+[data-theme="dark"] .calendar-day.other-month {
+  background-color: var(--color-muted-bg);
 }
 
 [data-theme="dark"] .search-button {
@@ -97,104 +126,7 @@
   background-color: var(--color-background);
 }
 
-/* Info Button Dark Theme */
-[data-theme="dark"] .info-button {
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-
-[data-theme="dark"] .info-button:hover {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-background);
-}
-
-/* GitHub Button Dark Theme */
-[data-theme="dark"] .github-button {
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-
-[data-theme="dark"] .github-button:hover {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-background);
-}
-
-/* Modal Dark Theme */
-[data-theme="dark"] .modal-overlay {
-  background-color: rgba(0, 17, 34, 0.95); /* Dark blue overlay */
-}
-
-[data-theme="dark"] .modal-container {
-  background: var(--color-background);
-  border-color: var(--color-border);
-}
-
-[data-theme="dark"] .modal-header {
-  background: var(--color-surface);
-  border-bottom-color: var(--color-border);
-}
-
-[data-theme="dark"] .modal-close {
-  border-color: var(--color-text);
-  color: var(--color-text);
-}
-
-[data-theme="dark"] .modal-close:hover {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-background);
-}
-
-[data-theme="dark"] .shortcut-heading {
-  border-bottom-color: var(--color-border);
-}
-
-[data-theme="dark"] .shortcut-list dt code {
-  background: var(--color-surface);
-  border-color: var(--color-border);
-}
-
-[data-theme="dark"] .example-list li {
-  background: var(--color-surface);
-  border-color: var(--color-border);
-  color: var(--color-primary);
-}
-
-[data-theme="dark"] .loading-spinner {
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-
-[data-theme="dark"] .result-error {
-  background-color: #330000;
-}
-
-[data-theme="dark"] .pwa-install-prompt {
-  background: var(--color-surface);
-  color: var(--color-text);
-  border-top-color: var(--color-accent);
-}
-
-[data-theme="dark"] .pwa-install-button {
-  background: var(--color-primary);
-  color: var(--color-background);
-  border-color: var(--color-primary);
-}
-
-[data-theme="dark"] .pwa-install-button:hover {
-  background: transparent;
-  color: var(--color-primary);
-}
-
-[data-theme="dark"] .suggestion-item:hover,
-[data-theme="dark"] .suggestion-item.selected {
-  background: var(--color-surface);
-  color: var(--color-text);
-}
-
-/* Dark theme term-specific highlighting */
+/* Dark theme term highlighting */
 [data-theme="dark"] .calendar-day.highlighted.term-michaelmas:not(.extended-week) {
   background-color: var(--color-michaelmas) !important;
   color: var(--color-background);
@@ -228,6 +160,95 @@
 [data-theme="dark"] .calendar-day.highlighted:not(.term-michaelmas):not(.term-hilary):not(.term-trinity) {
   background-color: var(--color-primary) !important;
   color: var(--color-background);
+}
+
+/* Dark theme extended week badges - light text on dark bg */
+[data-theme="dark"] .term-week-badge.michaelmas.extended-week {
+  background-color: var(--color-michaelmas-faded);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .term-week-badge.hilary.extended-week {
+  background-color: var(--color-hilary-faded);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .term-week-badge.trinity.extended-week {
+  background-color: var(--color-trinity-faded);
+  color: var(--color-text);
+}
+
+/* Modal Dark Theme */
+[data-theme="dark"] .modal-overlay {
+  background-color: rgba(5, 10, 20, 0.92);
+}
+
+[data-theme="dark"] .modal-container {
+  background: var(--color-background);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .modal-header {
+  background: #060e1c;
+  border-bottom-color: var(--color-accent);
+}
+
+[data-theme="dark"] .modal-close {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .modal-close:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+[data-theme="dark"] .shortcut-heading {
+  border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .shortcut-list dt code {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .example-list li {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] .loading-spinner {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .result-error {
+  background-color: #1a0a0a;
+}
+
+[data-theme="dark"] .pwa-install-prompt {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-top-color: var(--color-accent);
+}
+
+[data-theme="dark"] .pwa-install-button {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .pwa-install-button:hover {
+  background: transparent;
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] .suggestion-item:hover,
+[data-theme="dark"] .suggestion-item.selected {
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 /* Focus styles for dark theme */
@@ -270,17 +291,17 @@
     --color-text: #000000;
     --color-text-muted: #404040;
   }
-  
+
   [data-theme="dark"] {
     --color-border: #ffffff;
     --color-text: #ffffff;
     --color-text-muted: #c0c0c0;
   }
-  
+
   .calendar-day {
     border: 1px solid var(--color-border);
   }
-  
+
   .term-week-badge {
     border: 1px solid currentColor;
   }
@@ -288,7 +309,7 @@
 
 /* Focus visible for keyboard navigation */
 :focus-visible {
-  outline: var(--border-width-thick) solid var(--color-primary);
+  outline: var(--border-width-focus) solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -308,12 +329,12 @@
     --color-text: #000000;
     --color-text-muted: #666666;
   }
-  
+
   * {
     box-shadow: none !important;
     text-shadow: none !important;
   }
-  
+
   .calendar-day {
     border: 1px solid var(--color-border);
   }

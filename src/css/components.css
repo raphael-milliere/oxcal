@@ -6,20 +6,20 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
   background-color: var(--color-border);
-  border: var(--border-width) solid var(--color-border);
+  border-top: var(--border-width) solid var(--color-border);
 }
 
 /* Calendar Day Headers */
 .calendar-day-header {
   background-color: var(--color-primary);
   color: white;
-  padding: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-xs);
   text-align: center;
   font-weight: 700;
   font-size: var(--font-size-sm);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-right: var(--border-width) solid var(--color-border);
+  letter-spacing: 0.08em;
+  border-right: var(--border-width) solid rgba(255,255,255,0.15);
   border-bottom: var(--border-width) solid var(--color-border);
 }
 
@@ -27,16 +27,19 @@
   border-right: none;
 }
 
-/* Calendar Day Cell - Minimal height, dense layout */
+/* Calendar Day Cell */
 .calendar-day {
   background-color: var(--color-background);
-  min-height: 50px;
-  padding: var(--spacing-xs);
+  min-height: 56px;
+  padding: var(--spacing-sm) var(--spacing-xs);
   position: relative;
   cursor: pointer;
   border-right: var(--border-width) solid var(--color-border);
   border-bottom: var(--border-width) solid var(--color-border);
   font-family: var(--font-family-mono);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
 }
 
 .calendar-day:nth-child(7n) {
@@ -48,7 +51,7 @@
 }
 
 .calendar-day.other-month {
-  background-color: var(--color-surface);
+  background-color: var(--color-muted-bg);
   color: var(--color-text-muted);
   cursor: default;
 }
@@ -69,7 +72,7 @@
 }
 
 .calendar-day.selected {
-  outline: var(--border-width-thick) solid var(--color-accent);
+  outline: var(--border-width-heavy) solid var(--color-accent);
   outline-offset: -2px;
   z-index: 1;
 }
@@ -82,7 +85,7 @@
 
 .calendar-day.highlighted.term-michaelmas.extended-week {
   background-color: var(--color-michaelmas-faded) !important;
-  color: white;
+  color: var(--color-text);
 }
 
 .calendar-day.highlighted.term-hilary:not(.extended-week) {
@@ -92,7 +95,7 @@
 
 .calendar-day.highlighted.term-hilary.extended-week {
   background-color: var(--color-hilary-faded) !important;
-  color: white;
+  color: var(--color-text);
 }
 
 .calendar-day.highlighted.term-trinity:not(.extended-week) {
@@ -102,22 +105,35 @@
 
 .calendar-day.highlighted.term-trinity.extended-week {
   background-color: var(--color-trinity-faded) !important;
-  color: white;
+  color: var(--color-text);
 }
 
 /* Ensure text visibility on highlighted cells */
-.calendar-day.highlighted .day-number {
+.calendar-day.highlighted:not(.extended-week) .day-number {
   color: white;
 }
 
-.calendar-day.highlighted .term-week-badge {
+.calendar-day.highlighted.extended-week .day-number {
+  color: var(--color-text);
+}
+
+.calendar-day.highlighted:not(.extended-week) .term-week-badge {
   background: white !important;
   color: var(--color-primary) !important;
+}
+
+.calendar-day.highlighted.extended-week .term-week-badge {
+  background: var(--color-text) !important;
+  color: white !important;
 }
 
 /* Highlighting for dates outside term time */
 .calendar-day.highlighted:not(.term-michaelmas):not(.term-hilary):not(.term-trinity) {
   background-color: var(--color-primary) !important;
+  color: white;
+}
+
+.calendar-day.highlighted:not(.term-michaelmas):not(.term-hilary):not(.term-trinity) .day-number {
   color: white;
 }
 
@@ -137,36 +153,36 @@
   outline: none;
 }
 
-/* Term-specific day indicators - Use borders instead of backgrounds */
+/* Term-specific day indicators - Left border accent */
 .calendar-day.term-michaelmas:not(.other-month):not(.extended-week) {
-  border-left: 3px solid var(--color-michaelmas);
-  padding-left: calc(var(--spacing-xs) - 2px);
+  border-left: 4px solid var(--color-michaelmas);
+  padding-left: calc(var(--spacing-xs) - 3px);
 }
 
 .calendar-day.term-hilary:not(.other-month):not(.extended-week) {
-  border-left: 3px solid var(--color-hilary);
-  padding-left: calc(var(--spacing-xs) - 2px);
+  border-left: 4px solid var(--color-hilary);
+  padding-left: calc(var(--spacing-xs) - 3px);
 }
 
 .calendar-day.term-trinity:not(.other-month):not(.extended-week) {
-  border-left: 3px solid var(--color-trinity);
-  padding-left: calc(var(--spacing-xs) - 2px);
+  border-left: 4px solid var(--color-trinity);
+  padding-left: calc(var(--spacing-xs) - 3px);
 }
 
-/* Extended week day indicators - Faded colors for weeks 0, 9-12 */
+/* Extended week day indicators - Lighter borders */
 .calendar-day.term-michaelmas.extended-week:not(.other-month) {
-  border-left: 3px solid var(--color-michaelmas-faded);
-  padding-left: calc(var(--spacing-xs) - 2px);
+  border-left: 4px solid var(--color-michaelmas-faded);
+  padding-left: calc(var(--spacing-xs) - 3px);
 }
 
 .calendar-day.term-hilary.extended-week:not(.other-month) {
-  border-left: 3px solid var(--color-hilary-faded);
-  padding-left: calc(var(--spacing-xs) - 2px);
+  border-left: 4px solid var(--color-hilary-faded);
+  padding-left: calc(var(--spacing-xs) - 3px);
 }
 
 .calendar-day.term-trinity.extended-week:not(.other-month) {
-  border-left: 3px solid var(--color-trinity-faded);
-  padding-left: calc(var(--spacing-xs) - 2px);
+  border-left: 4px solid var(--color-trinity-faded);
+  padding-left: calc(var(--spacing-xs) - 3px);
 }
 
 /* Day Number */
@@ -174,6 +190,7 @@
   font-size: var(--font-size-base);
   font-weight: 700;
   margin-bottom: 0;
+  line-height: 1;
 }
 
 .calendar-day.other-month .day-number {
@@ -181,16 +198,17 @@
   font-weight: 400;
 }
 
-/* Term Week Badge - Stark labels */
+/* Term Week Badge - Readable labels */
 .term-week-badge {
   display: inline-block;
-  padding: 1px 3px;
-  font-size: 10px;
+  padding: 1px 4px;
+  font-size: 11px;
   font-weight: 700;
   color: white;
-  margin-top: var(--spacing-xs);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  font-family: var(--font-family-mono);
 }
 
 /* Full term badges (weeks 1-8) */
@@ -206,17 +224,20 @@
   background-color: var(--color-trinity);
 }
 
-/* Extended week badges (weeks 0, 9-12) - Faded colors */
+/* Extended week badges (weeks 0, 9-12) - Lighter colors, dark text */
 .term-week-badge.michaelmas.extended-week {
   background-color: var(--color-michaelmas-faded);
+  color: var(--color-text);
 }
 
 .term-week-badge.hilary.extended-week {
   background-color: var(--color-hilary-faded);
+  color: var(--color-text);
 }
 
 .term-week-badge.trinity.extended-week {
   background-color: var(--color-trinity-faded);
+  color: var(--color-text);
 }
 
 /* Search Result Styles - Stark status indicators */
@@ -253,7 +274,7 @@
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .result-details {
@@ -266,9 +287,6 @@
   font-weight: 700;
 }
 
-/* Info Display - Clean two-line style */
-/* Styles moved to layout.css for .info-line */
-
 /* Buttons - Brutalist flat style */
 .btn {
   display: inline-block;
@@ -278,7 +296,7 @@
   cursor: pointer;
   border: var(--border-width) solid var(--color-border);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .btn-primary {
@@ -326,7 +344,7 @@
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   padding-bottom: var(--spacing-sm);
   border-bottom: var(--border-width) solid var(--color-border);
 }
@@ -343,7 +361,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  margin-top: -1px; /* Overlap border */
+  margin-top: -1px;
   background: var(--color-background);
   border: var(--border-width) solid var(--color-border);
   border-top: none;
@@ -381,7 +399,7 @@
   font-size: var(--font-size-sm);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .suggestion-description {
@@ -407,7 +425,7 @@
 .pwa-install-prompt {
   background: var(--color-primary);
   color: white;
-  border-top: var(--border-width-thick) solid var(--color-accent);
+  border-top: var(--border-width-heavy) solid var(--color-accent);
   padding: var(--spacing-md);
 }
 
@@ -424,7 +442,7 @@
   font-size: var(--font-size-sm);
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   font-weight: 700;
 }
 
@@ -442,7 +460,7 @@
   font-weight: 700;
   cursor: pointer;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .pwa-install-button:hover {
@@ -491,14 +509,14 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
-  border-bottom: var(--border-width-thick) solid var(--color-primary);
+  border-bottom: var(--border-width-heavy) solid var(--color-primary);
 }
 
 .pwa-update-text {
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .pwa-update-button {
@@ -509,7 +527,7 @@
   font-weight: 700;
   cursor: pointer;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .pwa-update-button:hover {
@@ -517,37 +535,37 @@
   color: white;
 }
 
-/* Responsive adjustments - Even denser on mobile */
+/* Responsive adjustments */
 @media (max-width: 767px) {
   .calendar-grid {
     font-size: var(--font-size-sm);
   }
-  
+
   .calendar-day {
-    min-height: 40px;
-    padding: 1px;
+    min-height: 44px;
+    padding: 2px 1px;
   }
-  
+
   .term-week-badge {
-    font-size: 8px;
+    font-size: 9px;
     padding: 0 2px;
   }
-  
+
   .day-number {
     font-size: var(--font-size-sm);
   }
-  
+
   .pwa-install-content {
     flex-direction: column;
     text-align: center;
     gap: var(--spacing-sm);
   }
-  
+
   .pwa-install-actions {
     width: 100%;
     justify-content: center;
   }
-  
+
   .pwa-update-prompt {
     flex-direction: column;
     text-align: center;
@@ -556,19 +574,20 @@
 
 @media (min-width: 768px) {
   .calendar-day {
-    min-height: 60px;
+    min-height: 68px;
     padding: var(--spacing-sm);
   }
-  
+
   .term-week-badge {
-    font-size: 10px;
-    padding: 2px 4px;
+    font-size: 11px;
+    padding: 2px 5px;
   }
 }
 
 @media (min-width: 1024px) {
   .calendar-day {
-    min-height: 70px;
+    min-height: 78px;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 }
 
@@ -579,7 +598,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.85);
   display: none;
   align-items: center;
   justify-content: center;
@@ -593,7 +612,7 @@
 
 .modal-container {
   background: var(--color-background);
-  border: var(--border-width-thick) solid var(--color-border);
+  border: var(--border-width-heavy) solid var(--color-border);
   width: 100%;
   max-width: 600px;
   max-height: 90vh;
@@ -605,11 +624,11 @@
 .modal-header {
   background: var(--color-primary);
   color: white;
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: var(--border-width) solid var(--color-border);
+  border-bottom: var(--border-width-heavy) solid var(--color-accent);
 }
 
 .modal-title {
@@ -617,12 +636,12 @@
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .modal-close {
   background: transparent;
-  border: var(--border-width) solid white;
+  border: var(--border-width) solid rgba(255,255,255,0.4);
   color: white;
   width: 32px;
   height: 32px;
@@ -638,6 +657,7 @@
 .modal-close:hover {
   background: white;
   color: var(--color-primary);
+  border-color: white;
 }
 
 .modal-close:focus {
@@ -646,14 +666,14 @@
 }
 
 .modal-content {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-xl);
   overflow-y: auto;
   flex: 1;
 }
 
 /* Shortcut Sections */
 .shortcut-section {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
 }
 
 .shortcut-section:last-child {
@@ -661,13 +681,13 @@
 }
 
 .shortcut-heading {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   margin: 0 0 var(--spacing-md);
   padding-bottom: var(--spacing-sm);
-  border-bottom: var(--border-width) solid var(--color-border);
+  border-bottom: var(--border-width-thick) solid var(--color-border);
 }
 
 .shortcut-list {
@@ -690,8 +710,9 @@
 
 .shortcut-list dt code {
   background: var(--color-surface);
-  padding: 2px 4px;
+  padding: 2px 5px;
   border: var(--border-width) solid var(--color-border);
+  font-size: var(--font-size-sm);
 }
 
 .example-list {
@@ -704,10 +725,11 @@
   font-family: var(--font-family-mono);
   background: var(--color-surface);
   border: var(--border-width) solid var(--color-border);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
   margin-bottom: var(--spacing-sm);
   color: var(--color-primary);
   font-weight: 700;
+  font-size: var(--font-size-sm);
 }
 
 .example-list li:last-child {
@@ -721,7 +743,7 @@
     max-height: 100%;
     height: 100%;
   }
-  
+
   .modal-overlay {
     padding: 0;
   }

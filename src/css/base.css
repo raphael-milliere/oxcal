@@ -5,48 +5,51 @@
   --color-primary: #002147;  /* Official Oxford Blue */
   --color-primary-hover: #003366;
   --color-accent: #872434;  /* Oxford Red */
-  
+
   /* Term colors - Oxford-inspired */
   --color-michaelmas: #872434;  /* Oxford Red/Burgundy */
   --color-hilary: #003875;  /* Deep Oxford Blue */
   --color-trinity: #005A3C;  /* Oxford Green */
-  
-  /* Faded term colors for extended weeks (0, 9-12) */
-  --color-michaelmas-faded: #87243460;  /* 38% opacity */
-  --color-hilary-faded: #00387560;  /* 38% opacity */
-  --color-trinity-faded: #005A3C60;  /* 38% opacity */
-  
+
+  /* Faded term colors for extended weeks (0, 9-12) — explicit values, not opacity */
+  --color-michaelmas-faded: #c4919a;
+  --color-hilary-faded: #7f9bba;
+  --color-trinity-faded: #7fae9d;
+
   /* Neutral colors - Oxford-tinted */
   --color-background: #ffffff;
-  --color-surface: #f5f7fa;
+  --color-surface: #eef1f5;
   --color-border: #002147;
   --color-text: #001833;  /* Very dark Oxford Blue */
   --color-text-muted: #4a5f7a;
-  
-  /* Typography - Tight and functional */
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-family-mono: 'Courier New', Courier, monospace;
+  --color-muted-bg: #dde2ea;  /* Stronger muted background */
+
+  /* Typography - Intentional brutalist choices */
+  --font-family: 'Familjen Grotesk', 'Arial Narrow', Helvetica, sans-serif;
+  --font-family-mono: 'Martian Mono', 'Courier New', Courier, monospace;
   --font-size-base: 14px;
   --font-size-sm: 12px;
   --font-size-lg: 16px;
   --font-size-xl: 20px;
   --font-size-xxl: 24px;
-  --line-height: 1.2;
+  --font-size-display: 32px;
+  --line-height: 1.25;
   --line-height-tight: 1.0;
-  
-  /* Spacing - Minimal and functional */
+
+  /* Spacing - Dramatic contrast between tight and generous */
   --spacing-xs: 2px;
   --spacing-sm: 4px;
   --spacing-md: 8px;
   --spacing-lg: 12px;
   --spacing-xl: 16px;
-  
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+
   /* Borders - No radius, stark lines */
   --border-width: 1px;
   --border-width-thick: 2px;
+  --border-width-heavy: 3px;
   --border-width-focus: 3px;
-  
-  /* No shadows, no transitions in brutalist design */
 }
 
 /* CSS Reset - Brutalist approach */
@@ -62,7 +65,6 @@ html {
   font-size: var(--font-size-base);
   line-height: var(--line-height);
   -webkit-text-size-adjust: 100%;
-  /* No font smoothing for sharper text */
 }
 
 body {
@@ -132,7 +134,7 @@ button {
   padding: var(--spacing-sm) var(--spacing-md);
   color: inherit;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   font-weight: 700;
 }
 
@@ -179,7 +181,7 @@ label {
   font-weight: 700;
   text-transform: uppercase;
   font-size: var(--font-size-sm);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 /* Lists */
