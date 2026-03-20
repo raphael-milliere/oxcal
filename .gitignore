@@ -47,3 +47,6 @@ docs/_build/
 # Cache
 .cache/
 .parcel-cache/
+
+# Worktrees
+.worktrees/
