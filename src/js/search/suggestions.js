@@ -3,6 +3,7 @@
  */
 
 import { getAvailableYears, getCurrentAcademicYear } from '../data/termService.js';
+import { TERM_NAMES, DAY_NAMES, MONTH_NAMES } from './parser/patterns.js';
 
 /**
  * Generate search suggestions based on partial input
