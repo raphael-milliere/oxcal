@@ -234,12 +234,6 @@
   color: var(--color-primary);
 }
 
-.search-help {
-  font-size: 11px;
-  color: var(--color-text-muted);
-  margin-top: var(--spacing-xs);
-  font-family: var(--font-family-mono);
-}
 
 /* Calendar Section - The dominant element, fills available space */
 .calendar-section {
@@ -425,10 +419,6 @@
 
 /* Small mobile - maximize calendar space */
 @media (max-width: 374px) {
-  .search-help {
-    display: none;
-  }
-
   .search-label {
     font-size: 10px;
   }
@@ -440,10 +430,6 @@
 
 /* Very short viewports (landscape phones) - hide non-essential elements */
 @media (max-height: 500px) {
-  .search-help {
-    display: none;
-  }
-
   .search-section {
     padding: var(--spacing-xs) var(--spacing-md);
   }
