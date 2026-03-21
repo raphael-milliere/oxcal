@@ -241,7 +241,6 @@
   padding: 0;
   margin-bottom: var(--spacing-md);
   background: var(--color-background);
-  flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
