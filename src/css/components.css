@@ -6,6 +6,7 @@
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: auto;
   grid-auto-rows: minmax(0, calc(100cqi / 7));
+  align-content: start;
   gap: 0;
   background-color: var(--color-background);
   border-top: var(--border-width) solid var(--color-border);
