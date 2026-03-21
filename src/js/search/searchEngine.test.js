@@ -106,7 +106,7 @@ describe('search', () => {
     });
     
     it('should handle missing week data', () => {
-      const result = search('Week 9 Michaelmas 2026');
+      const result = search('Week 9 Michaelmas 2099');
       expect(result.success).toBe(false);
       expect(result.error).toContain('not found');
     });
@@ -118,7 +118,8 @@ describe('search', () => {
       expect(result.success).toBe(true);
       expect(result.type).toBe('single-date');
       expect(result.date).toBe('2025-03-25');
-      expect(result.detailText).toBe('Outside term time');
+      expect(result.term).toBe('hilary');
+      expect(result.week).toBe(10);
     });
     
     it('should identify term week for 15 November 2025', () => {
@@ -191,7 +192,7 @@ describe('search', () => {
     });
     
     it('should handle non-existent weeks', () => {
-      const result = search('Week 10 Trinity 2030');
+      const result = search('Week 10 Trinity 2099');
       expect(result.success).toBe(false);
       expect(result.error).toContain('not found');
     });
@@ -247,7 +248,7 @@ describe('getResultSummary', () => {
     const result = search('25 March 2025');
     const summary = getResultSummary(result);
     expect(summary).toContain('Tuesday, 25 March 2025');
-    expect(summary).toContain('Outside term time');
+    expect(summary).toContain('Hilary Term 2024-25, Week 10');
   });
   
   it('should summarize error results', () => {

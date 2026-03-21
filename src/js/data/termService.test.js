@@ -82,7 +82,7 @@ describe('termService', () => {
     });
 
     it('should return null for invalid year', () => {
-      const yearData = getYearData('2030-31');
+      const yearData = getYearData('2099-00');
       expect(yearData).toBeNull();
     });
   });
@@ -174,7 +174,7 @@ describe('termService', () => {
     });
 
     it('should return null if weeks missing', () => {
-      const dates = getFullTermDates('2025-26', 'hilary');
+      const dates = getFullTermDates('2099-00', 'hilary');
       expect(dates).toBeNull();
     });
   });

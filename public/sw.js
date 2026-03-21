@@ -1,5 +1,5 @@
 // Service Worker for OxCal PWA
-const CACHE_NAME = 'oxcal-v1.0.1';
+const CACHE_NAME = 'oxcal-v1.1.0';
 const RUNTIME_CACHE = 'oxcal-runtime';
 
 // Detect if running in production (bundled assets) or development
@@ -14,6 +14,10 @@ const STATIC_CACHE_URLS = isProduction ? [
   '/index.html',
   '/terms.json',
   '/manifest.json',
+  // Self-hosted fonts
+  '/fonts/familjen-grotesk-normal.woff2',
+  '/fonts/familjen-grotesk-italic.woff2',
+  '/fonts/martian-mono.woff2',
   // Icons that should exist
   '/icons/android/android-launchericon-192-192.png',
   '/icons/android/android-launchericon-512-512.png',
@@ -143,6 +147,7 @@ self.addEventListener('fetch', event => {
               url.pathname.includes('/icons/') ||
               url.pathname.endsWith('.png') ||
               url.pathname.endsWith('.svg') ||
+              url.pathname.endsWith('.woff2') ||
               // Cache data files
               url.pathname.endsWith('.json') ||
               // Cache HTML pages

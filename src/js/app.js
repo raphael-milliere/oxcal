@@ -7,7 +7,6 @@ import { getToday, formatDate } from './data/dateUtils.js';
 import { Calendar } from './components/calendar.js';
 import { search, generateSuggestions } from './search/index.js';
 import themeManager from './themeManager.js';
-import './pwa.js';
 
 // Application state
 let appState = {
@@ -42,6 +41,13 @@ async function init() {
     initializeEventListeners();
     handleURLParams();
     updateInfoPanel('today');
+
+    // Defer PWA registration until after initial render
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => import('./pwa.js'));
+    } else {
+      setTimeout(() => import('./pwa.js'), 1);
+    }
 
   } catch (error) {
     console.error('Failed to initialize app:', error);

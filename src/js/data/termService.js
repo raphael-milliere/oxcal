@@ -3,30 +3,17 @@
  */
 
 import { parseISODate } from './dateUtils.js';
+import inlinedTermsData from './termsData.js';
 
-let termsData = null;
+let termsData = inlinedTermsData;
 
 /**
- * Load terms data from JSON file
+ * Load terms data (synchronous — data is bundled inline)
+ * Kept async for API compatibility with existing callers.
  * @returns {Promise<Object>} The loaded terms data
  */
 export async function loadTermsData() {
-  if (termsData) {
-    return termsData;
-  }
-  
-  try {
-    const response = await fetch('/terms.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load terms data: ${response.status}`);
-    }
-    const data = await response.json();
-    termsData = data;
-    return data;
-  } catch (error) {
-    console.error('Error loading terms data:', error);
-    throw error;
-  }
+  return termsData;
 }
 
 /**
